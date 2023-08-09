@@ -24,47 +24,55 @@
             }
         }
     ?>
-    <form action="" method="POST">
-        <select name="Malestasjon">
-            <?php echo $Malestasjoner; ?>
-        </select>
-        <input type="number" step="any" name="SkalerValue">
-        <input type="submit" name="btnSkaler" value="Skaler">
+<div class="container">
+    <form>
+        <h2>Hydrologi Program</h2>
+        <div class="row">
+            <div class="col-2">
+                <label class="col-form-label "for="">Målestasjon</label>
+            </div>
+            <div class="col-10">
+                <input type="text" class="form-control" placeholder="Last name">
+            </div>
+        </div>
     </form>
-    <table class="table">
-    <?php
+</div>
 
-    if(isset($_POST["btnSkaler"])){
-        Skaler();
-        if(isset($_POST['SkalerValue'])){
-        }
-    }
 
-        function Skaler(){
-            $I = 0;
-            $csv = 'malestasjoner/' . $_POST['Malestasjon'];
-            $fileHandler = fopen($csv, "r");
-            $fileWrite = fopen("Skalert_" . $_POST['Malestasjon'], "w");
-            while(list($MaleDato, $MaleVerdi) = fgetcsv($fileHandler, 1024, ";")) {
-                $SkalertVerdi = $MaleVerdi * $_POST['SkalerValue'];
-                #echo "<tbody>";
-                #echo "<tr>";
-                #echo "<td>$I</td>";
-                #echo "<td>$MaleDato</td>";
-                #echo "<td>$MaleVerdi</td>";
-                #echo "<td>$SkalertVerdi</td>";
-                #echo "</tr>";
-                #echo "</tbody>";
-                fwrite($fileWrite, $MaleDato . ",");
-                fwrite($fileWrite, $SkalertVerdi . "\n");
-                $I++;
-            }
-            fclose($fileWrite);
-            fclose($fileHandler);
-        }
-
-    ?>
-    </table>
-    
+    <!-- <form method="POST">
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label" for="Malestasjon">Målestasjon</label>
+            <select class="form-control" name="Malestasjon">
+                <?php echo $Malestasjoner; ?>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="SkalerValue">Skalerings Faktor</label>
+            <input class="form-control" type="number" step="any" name="SkalerValue">
+            <input class="form-control btn btn-primary"type="submit" name="btnSkaler" value="Skaler">
+        </div>
+    </form> -->
 </body>
 </html>
+
+<?php
+if(isset($_POST["btnSkaler"])){
+    Skaler();
+}
+function Skaler(){
+        $I = 0;
+        $csv = 'malestasjoner/' . $_POST['Malestasjon'];
+        $fileHandler = fopen($csv, "r");
+        $fileWrite = fopen("Skalert_" . $_POST['Malestasjon'], "w");
+        while(list($MaleDato, $MaleVerdi) = fgetcsv($fileHandler, 1024, ";")) {
+            $SkalertVerdi = $MaleVerdi * $_POST['SkalerValue'];
+            fwrite($fileWrite, $MaleDato . ",");
+            fwrite($fileWrite, $SkalertVerdi . "\n");
+            $I++;
+        }
+        echo "Antall linjer prossesert: " . $I;
+        fclose($fileWrite);
+        fclose($fileHandler);
+    }
+?>
+
