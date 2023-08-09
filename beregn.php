@@ -27,13 +27,77 @@
 <div class="container">
     <form>
         <h2>Hydrologi Program</h2>
-        <div class="row">
-            <div class="col-2">
+        <div class="row mb-4">
+            <div class="col-1">
                 <label class="col-form-label "for="">Målestasjon</label>
             </div>
-            <div class="col-10">
-                <input type="text" class="form-control" placeholder="Last name">
+            <div class="col-2">
+                <select class="form-control" name="Malestasjon">
+                   <?php echo $Malestasjoner; ?>
+                </select>
             </div>
+        </div>
+        <div class="row mb-4">
+            <div class="col-1">
+                <label class="col-form-label" for="AntallMålinger">Målinger</label>
+            </div>
+            <div class="col-2">
+                <input class="form-control" type="number" name="AntallMålinger" value="1">
+            </div>
+        </div>
+        <div class="row mb-4">
+            <div class="col-1">
+                <label class="col-form-label" for="Qmiddel">Qmiddel</label>
+            </div>
+            <div class="col-2">
+                <input class="form-control" type="number" name="Qmiddel" value="1">
+            </div>
+            <small class="form-text col-1">m3/s km2</small>
+        </div>
+        <div class="row mb-4">
+            <div class="col-1">
+                <label class="col-form-label" for="FeltAreal">Felt Areal</label>
+            </div>
+            <div class="col-2">
+                <input class="form-control" type="number" name="FeltAreal" value="1">
+            </div>
+            <small class="form-text col-1">km2</small>
+        </div>
+        <div class="row mb-4">
+            <div class="col-1 pt-0">
+                <label class="col-form-label pt-0" for="SnaufjellsAndel">Snaufjells Andel</label>
+            </div>
+            <div class="col-2">
+                <input class="form-control" type="number" name="SnaufjellsAndel" value="1">
+            </div>
+            <small class="form-text col-1">%</small>
+        </div>
+        <div class="row mb-4">
+            <div class="col-1 pt-0">
+                <label class="col-form-label pt-0" for="EffSjøandel">Effektiv Sjøandel</label>
+            </div>
+            <div class="col-2">
+                <input class="form-control" type="number" name="EffSjøandel" value="1">
+            </div>
+            <small class="form-text col-1">%</small>
+        </div>
+        <div class="row mb-4">
+            <div class="col-1 pt-0">
+                <label class="col-form-label pt-0" for="MaxKvote">Max Kvote Felt</label>
+            </div>
+            <div class="col-2">
+                <input class="form-control" type="number" name="MaxKvote" value="1">
+            </div>
+            <small class="form-text col-1">m.o.h</small>
+        </div>
+        <div class="row mb-4">
+            <div class="col-1 pt-0">
+                <label class="col-form-label pt-0" for="MinKvote">Min Kvote Felt</label>
+            </div>
+            <div class="col-2">
+                <input class="form-control" type="number" name="MinKvote" value="1">
+            </div>
+            <small class="form-text col-1">m.o.h</small>
         </div>
     </form>
 </div>
