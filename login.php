@@ -4,9 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <?php include "head.php" ?>   
+    <?php
+	include "head.php" 
+	?> 
 </head>
 <?php 
+
 $is_invalid = false;
 
     if ($_SERVER["REQUEST_METHOD"] === "POST") {

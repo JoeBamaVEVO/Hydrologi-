@@ -1,8 +1,8 @@
 <?php
 $host = 'localhost';
-$user = 'root';
+$user = 'KristianAdmin';
 $pass = '5297Kris1234';
-$db = 'UtregningsProgram';
+$db = 'utregningsprogram';
 
 // Create database connection
 $mysqli = new mysqli($host, $user, $pass, $db);
