@@ -9,18 +9,30 @@
 	?>
 </head>
 <body>
-    <form method="POST">
-        <input type="submit" name="btnVis" value="VisData">
-    </form>
+    <?php 
+        $MaleDir = "malestasjoner";
+        $Malestasjoner = "";
+
+        if(is_dir($MaleDir)){
+            if($dh = opendir($MaleDir)){
+                while(($Malestasjon = readdir($dh)) !== false){
+                    if($Malestasjon != "." && $Malestasjon != ".."){
+                        $Malestasjoner .= "<option value='{$Malestasjon}'>{$Malestasjon}</option>";
+                    }
+                }
+                closedir($dh);
+            }
+        }
+    ?>
     <form action="" method="POST">
-        <input type="number" name="SkalerValue">
+        <select name="Malestasjon">
+            <?php echo $Malestasjoner; ?>
+        </select>
+        <input type="number" step="any" name="SkalerValue">
         <input type="submit" name="btnSkaler" value="Skaler">
     </form>
     <table class="table">
     <?php
-    if(isset($_POST["btnVis"])){
-        VisData();
-    }
 
     if(isset($_POST["btnSkaler"])){
         Skaler();
@@ -28,27 +40,11 @@
         }
     }
 
-        function VisData(){
-            $I = 0;
-            $csv = "CSV/SolielvaSkalert.csv";
-            $fileHandler = fopen($csv, "r");
-            while(list($MaleDato, $MaleVerdi) = fgetcsv($fileHandler, 1024, ";") and $I <= 1000) {
-                #echo "<tbody>";
-                #echo "<tr>";
-                #echo "<td>$I</td>";
-                #echo "<td>$MaleDato</td>";
-                #echo "<td>$MaleVerdi</td>";
-                #echo "</tr>";
-                #echo "</tbody>";
-                $I++;
-            }
-        } 
-
         function Skaler(){
             $I = 0;
-            $csv = "CSV/SolielvaSkalert.csv";
+            $csv = 'malestasjoner/' . $_POST['Malestasjon'];
             $fileHandler = fopen($csv, "r");
-            $fileWrite = fopen("outputCSV/output.csv", "w");
+            $fileWrite = fopen("Skalert_" . $_POST['Malestasjon'], "w");
             while(list($MaleDato, $MaleVerdi) = fgetcsv($fileHandler, 1024, ";")) {
                 $SkalertVerdi = $MaleVerdi * $_POST['SkalerValue'];
                 #echo "<tbody>";
