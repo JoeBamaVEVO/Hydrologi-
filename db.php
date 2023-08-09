@@ -1,5 +1,5 @@
 <?php
-$host = 'localhost';
+$host = 'phpmyadmin.fritun.no';
 $user = 'KristianAdmin';
 $pass = '5297Kris1234';
 $db = 'utregningsprogram';
