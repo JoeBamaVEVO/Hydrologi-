@@ -25,79 +25,144 @@
         }
     ?>
 <div class="container">
-    <form>
-        <h2>Hydrologi Program</h2>
+    <form class="align-center">
+        <h2 class="mb-4 text-center">Hydrologi Program</h2>
         <div class="row mb-4">
-            <div class="col-1">
-                <label class="col-form-label "for="">Målestasjon</label>
+            <div class="col-2">
+                <label class="col-form-label d-flex justify-content-end "for="Malestasjon">Målestasjon</label>
             </div>
             <div class="col-2">
                 <select class="form-control" name="Malestasjon">
-                   <?php echo $Malestasjoner; ?>
+                    <option value="" disabled selected>Velg Målestasjon</option>
+                    <?php echo $Malestasjoner; ?>
                 </select>
+            </div>
+            <div class="col-5">
+                <label class="col-form-label  d-flex justify-content-end" for="">Prosjekt</label>
+            </div>
+            <div class="col-2">
+                <input class="form-control" type="number" name="" value="1">
             </div>
         </div>
         <div class="row mb-4">
-            <div class="col-1">
-                <label class="col-form-label" for="AntallMålinger">Målinger</label>
+            <div class="col-2">
+                <label class="col-form-label d-flex justify-content-end" for="AntallMålinger">Antall Målinger</label>
+            </div>
+            <div class="col-2">
+                <input class="form-control" type="number" name="AntallMålinger" value="1">
+            </div>
+            <div class="col-5">
+                <label class="col-form-label  d-flex justify-content-end" for="AntallMålinger">Antall Målinger</label>
             </div>
             <div class="col-2">
                 <input class="form-control" type="number" name="AntallMålinger" value="1">
             </div>
         </div>
         <div class="row mb-4">
-            <div class="col-1">
-                <label class="col-form-label" for="Qmiddel">Qmiddel</label>
+            <div class="col-2">
+                <label class="col-form-label d-flex justify-content-end" for="Qmiddel">Qmiddel</label>
             </div>
             <div class="col-2">
                 <input class="form-control" type="number" name="Qmiddel" value="1">
             </div>
             <small class="form-text col-1">m3/s km2</small>
+            <div class="col-4">
+                <label class="col-form-label  d-flex justify-content-end" for="">Qmiddel</label>
+            </div>
+            <div class="col-2">
+                <input class="form-control" type="number" name="" value="1">
+            </div>
         </div>
         <div class="row mb-4">
-            <div class="col-1">
-                <label class="col-form-label" for="FeltAreal">Felt Areal</label>
+            <div class="col-2">
+                <label class="col-form-label d-flex justify-content-end" for="FeltAreal">Felt Areal</label>
             </div>
             <div class="col-2">
                 <input class="form-control" type="number" name="FeltAreal" value="1">
             </div>
             <small class="form-text col-1">km2</small>
+            <div class="col-4">
+                <label class="col-form-label  d-flex justify-content-end" for="">Felt Areal</label>
+            </div>
+            <div class="col-2">
+                <input class="form-control" type="number" name="" value="1">
+            </div>
         </div>
         <div class="row mb-4">
-            <div class="col-1 pt-0">
-                <label class="col-form-label pt-0" for="SnaufjellsAndel">Snaufjells Andel</label>
+            <div class="col-2 pt-0">
+                <label class="col-form-label d-flex justify-content-end pt-0" for="SnaufjellsAndel">Snaufjellsandel</label>
             </div>
             <div class="col-2">
                 <input class="form-control" type="number" name="SnaufjellsAndel" value="1">
             </div>
             <small class="form-text col-1">%</small>
+            <div class="col-4">
+                <label class="col-form-label  d-flex justify-content-end" for="">Snaufjellsandel</label>
+            </div>
+            <div class="col-2">
+                <input class="form-control" type="number" name="" value="1">
+            </div>
         </div>
         <div class="row mb-4">
-            <div class="col-1 pt-0">
-                <label class="col-form-label pt-0" for="EffSjøandel">Effektiv Sjøandel</label>
+            <div class="col-2 pt-0">
+                <label class="col-form-label d-flex justify-content-end pt-0" for="EffSjøandel">Effektiv Sjøandel</label>
             </div>
             <div class="col-2">
                 <input class="form-control" type="number" name="EffSjøandel" value="1">
             </div>
             <small class="form-text col-1">%</small>
+            <div class="col-4">
+                <label class="col-form-label  d-flex justify-content-end" for="">Effektiv Sjøandel</label>
+            </div>
+            <div class="col-2">
+                <input class="form-control" type="number" name="" value="1">
+            </div>
         </div>
         <div class="row mb-4">
-            <div class="col-1 pt-0">
-                <label class="col-form-label pt-0" for="MaxKvote">Max Kvote Felt</label>
+            <div class="col-2 pt-0">
+                <label class="col-form-label d-flex justify-content-end pt-0" for="MaxKvote">Max Kvote Felt</label>
             </div>
             <div class="col-2">
                 <input class="form-control" type="number" name="MaxKvote" value="1">
             </div>
             <small class="form-text col-1">m.o.h</small>
+            <div class="col-4">
+                <label class="col-form-label  d-flex justify-content-end" for="">Max Kvote Felt</label>
+            </div>
+            <div class="col-2">
+                <input class="form-control" type="number" name="" value="1">
+            </div>
         </div>
         <div class="row mb-4">
-            <div class="col-1 pt-0">
-                <label class="col-form-label pt-0" for="MinKvote">Min Kvote Felt</label>
+            <div class="col-2 pt-0">
+                <label class="col-form-label d-flex justify-content-end pt-0" for="MinKvote">Min Kvote Felt</label>
             </div>
             <div class="col-2">
                 <input class="form-control" type="number" name="MinKvote" value="1">
             </div>
             <small class="form-text col-1">m.o.h</small>
+            <div class="col-4">
+                <label class="col-form-label  d-flex justify-content-end" for="">Min Kvote Felt</label>
+            </div>
+            <div class="col-2">
+                <input class="form-control" type="number" name="" value="1">
+            </div>
+        </div>
+        <div class="row mb-4">
+            <div class="col-9 pt-0">
+                <label class="col-form-label d-flex justify-content-end" for="">Feltlengde</label>
+            </div>
+            <div class="col-2">
+                <input class="form-control" type="number" name="" value="1">
+            </div>
+        </div>
+        <div class="row mb-4">
+            <div class="col-9 pt-0">
+                <label class="col-form-label d-flex justify-content-end">Sjøandel</label>
+            </div>
+            <div class="col-2">
+                <input class="form-control" type="number" name="" value="1">
+            </div>
         </div>
     </form>
 </div>
