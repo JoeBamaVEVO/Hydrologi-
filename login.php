@@ -29,8 +29,8 @@ $is_invalid = false;
 
                 $_SESSION["idusers"] = $user["idusers"];
 
-                if(!file_exists("users/" . $_SESSION["idusers"] . "-" . $user["fname"])) {
-                    mkdir("users/" . $_SESSION["idusers"] . "-" . $user["fname"], 777, true);
+                if(!file_exists("users/" . $_SESSION["idusers"] . "-" . $user["fname"]. "/projects")) {
+                    mkdir("users/" . $_SESSION["idusers"] . "-" . $user["fname"]. "/projects", 777, true);
                 }
 
                 header("Location: index.php");

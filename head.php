@@ -4,7 +4,14 @@ include "err_disp.php";
 if(!isset($_SESSION)) 
 	{ 
 	 session_start(); 
-    } 
+    }
+if(isset($_SESSION['idusers'])){
+	$userID = $_SESSION["idusers"];
+	$sql = "SELECT * FROM users WHERE idusers = $userID";
+	$result = $mysqli->query($sql);
+	$user = $result->fetch_assoc();
+	$userDir = "users/" . $_SESSION["idusers"] . "-" . $user["fname"];
+}
 include "navbar.php";
 ?>
 

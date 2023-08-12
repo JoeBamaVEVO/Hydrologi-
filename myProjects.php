@@ -7,16 +7,29 @@
     <?php include "head.php" ?>
 </head>
 <body>
+    <?php 
+    if(isset($_POST["newProject"])){
+        mkdir($userDir . "/projects" . "/" . $_POST["newProjectName"], 777, true);
+    }
+    ?>
     <div class="container-fluid ms-0 ps-0">
         <div class="container-fluid float-start border ms-0 ps-0" style="min-height: 100%; max-width: 25%;" >
             <h2>Mine Prosjekter</h2>
-            <ul class="list-group">
-                <li class="list-group-item active" aria-current="true">An active item</li>
-                <li class="list-group-item">A second item</li>
-                <li class="list-group-item">A third item</li>
-                <li class="list-group-item">A fourth item</li>
-                <li class="list-group-item">And a fifth one</li>
-            </ul>
+            <div class="list-group">
+                <a href="" class="list-group-item list-group-item-action">
+                    The current link item
+                </a>
+                <a href="#" class="list-group-item list-group-item-action">A second link item</a>
+                <a href="#" class="list-group-item list-group-item-action">A third link item</a>
+                <a href="#" class="list-group-item list-group-item-action">A fourth link item</a>
+                <a href="#" class="list-group-item list-group-item-action disabled" tabindex="-1" aria-disabled="true">A disabled link item</a>
+            </div>
+            <form action="" method="POST">
+                <input name="newProjectName" type="text">
+                <button class="btn btn-primary float-end" type="submit" alt="" name="newProject"> 
+                    <p class="mb-0"><img src="/Bilder/Svg/plus-circle-fill.svg" alt=""> Nytt Prosjekt</p>
+                </button> 
+            </form>
         </div>
     </div>
 </body>
