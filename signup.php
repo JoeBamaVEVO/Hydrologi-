@@ -37,7 +37,7 @@ if(isset($_POST['submit'])) {
             session_start();
             session_regenerate_id();
             $_SESSION["idusers"] = $mysqli->insert_id;
-            mkdir("Users/" . $_SESSION["idusers"] . "-" . $_POST["fname"], 777, true);
+            mkdir("Users/" . $_SESSION["idusers"] . "-" . $_POST["fname"]. "/projects", 777, true);
             header("Location: index.php");
             exit();
         } else {
