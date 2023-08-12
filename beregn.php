@@ -9,6 +9,7 @@
     if(!isset($_SESSION['idusers'])){
         header("location: index.php");
     }
+    $project =$_GET['project']
 	?>
 </head>
 <body>
@@ -44,7 +45,7 @@
                 <label class="col-form-label  d-flex justify-content-end" for="">Prosjekt</label>
             </div>
             <div class="col-2">
-                <input class="form-control" type="number" name="" value="1">
+                <?php echo '<input class="form-control" type="text" name="" value="' . $project . '">'; ?>
             </div>
         </div>
         <div class="row mb-4">
