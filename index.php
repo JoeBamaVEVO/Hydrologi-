@@ -16,7 +16,7 @@
             </div>
             <h2 class="align-self-center mb-4">Hydrologi Program</h2>
             <?php if (isset($_SESSION["idusers"])): ?>
-                <a class="align-self-center"href="beregn.php"><button class="btn btn-primary">Hydrologi Program</button></a>
+                <a class="align-self-center"href="MineProsjekter.php"><button class="btn btn-primary">Mine Prosjekter</button></a>
             <?php else: ?>
                 <a class="align-self-center mb-4"href="login.php"><button type="button" class="btn btn-primary">login</button></a>
             <?php endif; ?>

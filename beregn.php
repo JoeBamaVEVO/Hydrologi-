@@ -9,7 +9,7 @@
     if(!isset($_SESSION['idusers'])){
         header("location: index.php");
     }
-    $project =$_GET['project']
+    $project = $_GET['project']
 	?>
 </head>
 <body>
@@ -29,7 +29,7 @@
         }
     ?>
 <div class="container">
-    <form class="align-center">
+    <form method="POST" class="align-center">
         <h2 class="mb-4 text-center">Hydrologi Program</h2>
         <div class="row mb-4">
             <div class="col-2">
@@ -37,7 +37,7 @@
             </div>
             <div class="col-2">
                 <select class="form-control" name="Malestasjon">
-                    <option value="" disabled selected>Velg Målestasjon</option>
+                    <option value="Opt1" disabled selected>Velg Målestasjon</option>
                     <?php echo $Malestasjoner; ?>
                 </select>
             </div>
@@ -168,6 +168,14 @@
                 <input class="form-control" type="number" name="" value="1">
             </div>
         </div>
+        <div class="row mb-4">
+        <button name="hentMetadata" type="submit" class="ms-5 col-2 btn btn-primary">
+                Hent Metadata
+            </button>
+            <button name="lagreMetadata" type="submit" class="ms-5 col-2 btn btn-primary">
+                Lagre Metadata
+            </button>
+        </div>
     </form>
 </div>
 
@@ -191,6 +199,28 @@
 <?php
 if(isset($_POST["btnSkaler"])){
     Skaler();
+}
+if(isset($_POST["lagreMetadata"])){
+    LagreMetadata($userDir, $project);
+}
+function LagreMetadata($userDir, $project){
+    $Malestasjon = $_POST['Malestasjon'];
+    if(empty($Malestasjon)){
+        echo "Du må velge en målestasjon";
+        return;
+    }
+    else{
+        $csv = $userDir . "/projects/" . $project . "/" . "Metadata" . $Malestasjon; 
+        $fileWrite = fopen($csv, "w");
+        fwrite($fileWrite, "AntallMalinger;" . $_POST['AntallMalinger'] . "\n");
+        fwrite($fileWrite, "Qmiddel;" . $_POST['Qmiddel'] . "\n");
+        fwrite($fileWrite, "FeltAreal;" . $_POST['FeltAreal'] . "\n");
+        fwrite($fileWrite, "SnaufjellsAndel;" . $_POST['SnaufjellsAndel'] . "\n");
+        fwrite($fileWrite, "EffSjoandel;" . $_POST['EffSjoandel'] . "\n");
+        fwrite($fileWrite, "MaxKvote;" . $_POST['MaxKvote'] . "\n");
+        fwrite($fileWrite, "MinKvote;" . $_POST['MinKvote'] . "\n");
+        fclose($fileWrite);
+    }
 }
 function Skaler(){
         $I = 0;
