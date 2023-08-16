@@ -8,6 +8,9 @@
 </head>
 <body>
     <?php 
+    if(!isset($_SESSION['idusers'])){
+        header("location: index.php");
+    }
     if(isset($_POST["newProject"])){
         mkdir($userDir . "/projects" . "/" . $_POST["newProjectName"], 777, true);
     }
