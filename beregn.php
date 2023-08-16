@@ -6,7 +6,7 @@
     <title>Document</title>
     <?php 
 	include "head.php";
-    if(!isset($_SESSION['idusers'])){
+    if(!isset($_SESSION['idusers'])){            // Skjekker om du logget inn
         header("location: index.php");
     }
     $project = $_GET['project']
@@ -197,12 +197,14 @@
 </html>
 
 <?php
+// Skjekker om knappene blir trykket på
 if(isset($_POST["btnSkaler"])){
     Skaler();
 }
 if(isset($_POST["lagreMetadata"])){
     LagreMetadata($userDir, $project);
 }
+
 function LagreMetadata($userDir, $project){
     $Malestasjon = $_POST['Malestasjon'];
     if(empty($Malestasjon)){
