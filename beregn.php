@@ -48,11 +48,11 @@ if(isset($_POST["hentMetadata"])){
 }
 
 
-// Tegber en form med alle input feltene
-        echo '
+// Tegner en form med alle input feltene
+echo '
 <div class="container">
     <form method="POST" class="align-center">
-        <h2 class="mb-4 text-center">Hydrologi Program</h2>
+        <h2 class="mb-4 text-center">Hydrologi '. $project .'</h2>
         <div class="row mb-4">
             <div class="col-2">
                 <label class="col-form-label d-flex justify-content-end "for="Malestasjon">Målestasjon</label>
@@ -66,7 +66,7 @@ if(isset($_POST["hentMetadata"])){
                 <label class="col-form-label  d-flex justify-content-end" for="">Prosjekt</label>
             </div>
             <div class="col-2">
-                <input class="form-control" type="text" name="" value="' . $project . '"> 
+                <input class="form-control" type="text" name="" value="' . $project . '" disabled> 
             </div>
         </div>
         <div class="row mb-4">
@@ -190,22 +190,50 @@ if(isset($_POST["hentMetadata"])){
             </div>
         </div>
         <div class="row mb-4">
-        <button name="hentMetadata" type="submit" class="ms-5 col-2 btn btn-primary">
-                Hent Metadata
-            </button>
-            <button name="lagreMetadata" type="submit" class="ms-5 col-2 btn btn-primary">
-                Lagre Metadata
-            </button>
+            <div class="col-2">
+                <button name="hentMetadata" type="submit" class="ms-5 btn btn-primary">
+                    Hent Metadata
+                </button>
+            </div>
+            <div class="col-2">
+                <button name="lagreMetadata" type="submit" class="ms-5 btn btn-primary">
+                    Lagre Metadata
+                </button>
+            </div>
+            <div class="col-5">
+                <button name="lagreProsjekt" type="submit" class="float-end ms-5 btn btn-primary">
+                    Lagre Prosjekt
+                </button>
+            </div>
+            <div class="col-2">
+                <button name="lagGraf" type="submit" class="ms-5 btn btn-primary">
+                    Lag Grafer
+                </button>
+            </div>
+            
+        </div>
+        <div class="row mb-4">
+            <div class="col-2">
+                <button name="Skaler" type="submit" class="ms-5 btn btn-primary">
+                    Skaler Målinger
+                </button>
+            </div>
         </div>
     </form>
 </div>
 ';
 
 
+
 if(isset($_POST["btnSkaler"])){
     Skaler();
 }
+
 if(isset($_POST["lagreMetadata"])){
+    LagreMetadata($userDir, $project);
+}
+
+if(isset($_POST["lagreProsjekt"])){
     LagreMetadata($userDir, $project);
 }
      
