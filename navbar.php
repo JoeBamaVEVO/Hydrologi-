@@ -9,7 +9,7 @@
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <?php if(isset($_SESSION["idusers"])): ?>
             <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="/beregn.php">Hydrologi Program</a>
+                <a class="nav-link active" aria-current="page" href="/MineProsjekter.php">Mine Prosjekter</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="logout.php">Logout</a>
