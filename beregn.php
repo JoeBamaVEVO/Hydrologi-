@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <?php 
+    $value = 150;
 	include "head.php";
     if(!isset($_SESSION['idusers'])){            // Skjekker om du logget inn
         header("location: index.php");
@@ -204,7 +205,25 @@ if(isset($_POST["btnSkaler"])){
 if(isset($_POST["lagreMetadata"])){
     LagreMetadata($userDir, $project);
 }
+if(isset($_POST["hentMetadata"])){
+    HentMetadata($userDir, $project);
+}
 
+function HentMetadata($userDir, $project){
+    $Malestasjon = $_POST['Malestasjon'];
+    if(empty($Malestasjon)){
+        echo "Du må velge en målestasjon";
+        return;
+    }
+    $Metadata = $userDir . "/projects/" . $project . "/" . "metadata" . $Malestasjon;
+    echo $Metadata;
+    if(file_exists($Metadata)){
+        $file = fopen($Metadata, "r");
+        while(list($key, $value) = fgetcsv($file, 1024, ";")){
+           
+        }
+    }
+}
 function LagreMetadata($userDir, $project){
     $Malestasjon = $_POST['Malestasjon'];
     if(empty($Malestasjon)){
