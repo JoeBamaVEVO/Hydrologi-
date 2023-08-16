@@ -5,30 +5,51 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <?php 
-    $value = 150;
 	include "head.php";
-    if(!isset($_SESSION['idusers'])){            // Skjekker om du logget inn
+    if(!isset($_SESSION['idusers'])){            // Sjekker om du logget inn
         header("location: index.php");
     }
-    $project = $_GET['project']
+    $project = $_GET['project'];
+    
+    $Qmiddel = $_SESSION['Qmiddel'];
+    $FeltAreal = $_SESSION['FeltAreal'];
+    $SnaufjellsAndel = $_SESSION['SnaufjellsAndel'];
+    $EffSjoandel = $_SESSION['EffSjoandel'];
+    $MaxKvote = $_SESSION['MaxKvote'];
+    $MinKvote = $_SESSION['MinKvote'];
+    $ValgtMalestasjon = $_SESSION['Malestasjon'];
 	?>
 </head>
 <body>
-    <?php 
+    <?php
+        // Setter måle directory og populerer dropdown menyen
         $MaleDir = "malestasjoner";
         $Malestasjoner = "";
 
         if(is_dir($MaleDir)){
             if($dh = opendir($MaleDir)){
                 while(($Malestasjon = readdir($dh)) !== false){
-                    if($Malestasjon != "." && $Malestasjon != ".."){
+                    if($Malestasjon == $ValgtMalestasjon){
+                        $Malestasjoner .= "<option value='{$Malestasjon}' selected>{$Malestasjon}</option>";
+                    }
+                    elseif($Malestasjon != "." && $Malestasjon != ".."){
                         $Malestasjoner .= "<option value='{$Malestasjon}'>{$Malestasjon}</option>";
                     }
                 }
                 closedir($dh);
             }
         }
-    ?>
+
+// Skjekker om HentMetadata blir trykket på
+
+if(isset($_POST["hentMetadata"])){
+    HentMetadata($userDir, $project);
+    header("location: beregn.php?project=" . $project);
+}
+
+
+// Tegber en form med alle input feltene
+        echo '
 <div class="container">
     <form method="POST" class="align-center">
         <h2 class="mb-4 text-center">Hydrologi Program</h2>
@@ -37,16 +58,15 @@
                 <label class="col-form-label d-flex justify-content-end "for="Malestasjon">Målestasjon</label>
             </div>
             <div class="col-2">
-                <select class="form-control" name="Malestasjon">
-                    <option value="Opt1" disabled selected>Velg Målestasjon</option>
-                    <?php echo $Malestasjoner; ?>
+                <select class="form-control" name="Malestasjon" value="Klvtveitvatn.csv">
+                    ' . $Malestasjoner .'
                 </select>
             </div>
             <div class="col-5">
                 <label class="col-form-label  d-flex justify-content-end" for="">Prosjekt</label>
             </div>
             <div class="col-2">
-                <?php echo '<input class="form-control" type="text" name="" value="' . $project . '">'; ?>
+                <input class="form-control" type="text" name="" value="' . $project . '"> 
             </div>
         </div>
         <div class="row mb-4">
@@ -68,7 +88,7 @@
                 <label class="col-form-label d-flex justify-content-end" for="Qmiddel">Qmiddel</label>
             </div>
             <div class="col-2">
-                <input class="form-control" type="number" name="Qmiddel" value="1">
+                <input class="form-control" type="number" name="Qmiddel" value="' . $Qmiddel . '" step="0.01" >
             </div>
             <small class="form-text col-1">m3/s km2</small>
             <div class="col-4">
@@ -83,7 +103,7 @@
                 <label class="col-form-label d-flex justify-content-end" for="FeltAreal">Felt Areal</label>
             </div>
             <div class="col-2">
-                <input class="form-control" type="number" name="FeltAreal" value="1">
+                <input class="form-control" type="number" name="FeltAreal" value="' . $FeltAreal .'" step="0.01">
             </div>
             <small class="form-text col-1">km2</small>
             <div class="col-4">
@@ -98,7 +118,7 @@
                 <label class="col-form-label d-flex justify-content-end pt-0" for="SnaufjellsAndel">Snaufjellsandel</label>
             </div>
             <div class="col-2">
-                <input class="form-control" type="number" name="SnaufjellsAndel" value="1">
+                <input class="form-control" type="number" name="SnaufjellsAndel" value="' . $SnaufjellsAndel . '" step="0.01">
             </div>
             <small class="form-text col-1">%</small>
             <div class="col-4">
@@ -113,7 +133,7 @@
                 <label class="col-form-label d-flex justify-content-end pt-0" for="EffSjøandel">Effektiv Sjøandel</label>
             </div>
             <div class="col-2">
-                <input class="form-control" type="number" name="EffSjøandel" value="1">
+                <input class="form-control" type="number" name="EffSjoandel" value="' . $EffSjoandel . '" step="0.01">
             </div>
             <small class="form-text col-1">%</small>
             <div class="col-4">
@@ -128,7 +148,7 @@
                 <label class="col-form-label d-flex justify-content-end pt-0" for="MaxKvote">Max Kvote Felt</label>
             </div>
             <div class="col-2">
-                <input class="form-control" type="number" name="MaxKvote" value="1">
+                <input class="form-control" type="number" name="MaxKvote" value="'. $MaxKvote .'" step="0.01">
             </div>
             <small class="form-text col-1">m.o.h</small>
             <div class="col-4">
@@ -143,7 +163,7 @@
                 <label class="col-form-label d-flex justify-content-end pt-0" for="MinKvote">Min Kvote Felt</label>
             </div>
             <div class="col-2">
-                <input class="form-control" type="number" name="MinKvote" value="1">
+                <input class="form-control" type="number" name="MinKvote" value="'.$MinKvote.'" step="0.01">
             </div>
             <small class="form-text col-1">m.o.h</small>
             <div class="col-4">
@@ -179,13 +199,22 @@
         </div>
     </form>
 </div>
+';
 
 
+if(isset($_POST["btnSkaler"])){
+    Skaler();
+}
+if(isset($_POST["lagreMetadata"])){
+    LagreMetadata($userDir, $project);
+}
+     
+?>
     <!-- <form method="POST">
         <div class="form-group row">
             <label class="col-sm-2 col-form-label" for="Malestasjon">Målestasjon</label>
             <select class="form-control" name="Malestasjon">
-                <?php echo $Malestasjoner; ?>
+                <?php //echo $Malestasjoner; ?>
             </select>
         </div>
         <div class="form-group">
@@ -198,50 +227,79 @@
 </html>
 
 <?php
-// Skjekker om knappene blir trykket på
-if(isset($_POST["btnSkaler"])){
-    Skaler();
-}
-if(isset($_POST["lagreMetadata"])){
-    LagreMetadata($userDir, $project);
-}
-if(isset($_POST["hentMetadata"])){
-    HentMetadata($userDir, $project);
-}
 
 function HentMetadata($userDir, $project){
+    //denne variabelen brukes innen funksjonen
     $Malestasjon = $_POST['Malestasjon'];
     if(empty($Malestasjon)){
         echo "Du må velge en målestasjon";
         return;
     }
+    // Finnes sikkert en bedre måte å gjøre dette på men fukkit
+    $_SESSION['Malestasjon'] = $Malestasjon;
     $Metadata = $userDir . "/projects/" . $project . "/" . "metadata" . $Malestasjon;
     echo $Metadata;
     if(file_exists($Metadata)){
         $file = fopen($Metadata, "r");
         while(list($key, $value) = fgetcsv($file, 1024, ";")){
-           
+            echo $key . " " . $value . "<br>";
+            if($key == "Qmiddel"){
+                $_SESSION['Qmiddel'] = $value;
+            }
+            if($key == "FeltAreal"){
+                $_SESSION['FeltAreal'] = $value;
+            }
+            if($key == "SnaufjellsAndel"){
+                $_SESSION['SnaufjellsAndel'] = $value;
+            }
+            if($key == "EffSjoandel"){
+                $_SESSION['EffSjoandel'] = $value;
+            }
+            if($key == "MaxKvote"){
+                $_SESSION['MaxKvote'] = $value;
+            }
+            if($key == "MinKvote"){
+                $_SESSION['MinKvote'] = $value;
+            }
+
         }
+        fclose($file);
+        header("location: beregn.php?project=" . $project);
+        exit();
+    }
+    else{
+        echo "Filen eksisterer ikke";
+        $_SESSION['Qmiddel'] = 0;
+        $_SESSION['FeltAreal'] = 0 ;
+        $_SESSION['SnaufjellsAndel'] = 0;
+        $_SESSION['EffSjoandel'] = 0;
+        $_SESSION['MaxKvote'] = 0;
+        $_SESSION['MinKvote'] = 0;
+
+        header("location: beregn.php?project=" . $project);
+        exit();
     }
 }
+   
 function LagreMetadata($userDir, $project){
     $Malestasjon = $_POST['Malestasjon'];
     if(empty($Malestasjon)){
         echo "Du må velge en målestasjon";
         return;
     }
-    else{
-        $csv = $userDir . "/projects/" . $project . "/" . "Metadata" . $Malestasjon; 
-        $fileWrite = fopen($csv, "w");
-        fwrite($fileWrite, "AntallMalinger;" . $_POST['AntallMalinger'] . "\n");
-        fwrite($fileWrite, "Qmiddel;" . $_POST['Qmiddel'] . "\n");
-        fwrite($fileWrite, "FeltAreal;" . $_POST['FeltAreal'] . "\n");
-        fwrite($fileWrite, "SnaufjellsAndel;" . $_POST['SnaufjellsAndel'] . "\n");
-        fwrite($fileWrite, "EffSjoandel;" . $_POST['EffSjoandel'] . "\n");
-        fwrite($fileWrite, "MaxKvote;" . $_POST['MaxKvote'] . "\n");
-        fwrite($fileWrite, "MinKvote;" . $_POST['MinKvote'] . "\n");
-        fclose($fileWrite);
-    }
+    // Finnes sikkert en bedre måte å gjøre dette på men fukkit
+    $_SESSION['Malestasjon'] = $Malestasjon;
+    $csv = $userDir . "/projects/" . $project . "/" . "Metadata" . $Malestasjon; 
+    $fileWrite = fopen($csv, "w");
+    fwrite($fileWrite, "AntallMalinger;" . $_POST['AntallMalinger'] . "\n");
+    fwrite($fileWrite, "Qmiddel;" . $_POST['Qmiddel'] . "\n");
+    fwrite($fileWrite, "FeltAreal;" . $_POST['FeltAreal'] . "\n");
+    fwrite($fileWrite, "SnaufjellsAndel;" . $_POST['SnaufjellsAndel'] . "\n");
+    fwrite($fileWrite, "EffSjoandel;" . $_POST['EffSjoandel'] . "\n");
+    fwrite($fileWrite, "MaxKvote;" . $_POST['MaxKvote'] . "\n");
+    fwrite($fileWrite, "MinKvote;" . $_POST['MinKvote'] . "\n");
+    fclose($fileWrite);
+ 
 }
 function Skaler(){
         $I = 0;
