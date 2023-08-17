@@ -9,8 +9,19 @@
     if(!isset($_SESSION['idusers'])){            // Sjekker om du logget inn
         header("location: index.php");
     }
+    if(empty($_GET['project'])){
+        header("location: index.php");
+    }
+    if(!isset($_GET['project'])){
+        header("location: index.php");
+    }
+    if(!is_dir($userDir . "/projects" . "/" . $_GET["project"])){
+        header("location: index.php");
+    }
     $project = $_GET['project'];
     
+   
+
     $Qmiddel = $_SESSION['Qmiddel'];
     $FeltAreal = $_SESSION['FeltAreal'];
     $SnaufjellsAndel = $_SESSION['SnaufjellsAndel'];
