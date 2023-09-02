@@ -19,7 +19,16 @@
         header("location: index.php");
     }
     $project = $_GET['project'];
-    
+    $projectData = $userDir . "/projects/" . $project . "/" . $project . "Data";
+
+    if(file_exists($projectData)){
+        echo $projectData;
+    }
+    else{
+        echo "Filen eksisterer ikke ";
+        echo $projectData;
+    }
+
    
 
     $Qmiddel = $_SESSION['Qmiddel'];
@@ -88,10 +97,10 @@ echo '
                 <input class="form-control" type="number" name="AntallMålinger" value="1">
             </div>
             <div class="col-5">
-                <label class="col-form-label  d-flex justify-content-end" for="AntallMålinger">Antall Målinger</label>
+                <label class="col-form-label  d-flex justify-content-end" for="ProsjAntallMålinger">Antall Målinger</label>
             </div>
             <div class="col-2">
-                <input class="form-control" type="number" name="AntallMålinger" value="1">
+                <input class="form-control" type="number" name="ProsjAntallMålinger" value="1">
             </div>
         </div>
         <div class="row mb-4">
@@ -106,7 +115,7 @@ echo '
                 <label class="col-form-label  d-flex justify-content-end" for="">Qmiddel</label>
             </div>
             <div class="col-2">
-                <input class="form-control" type="number" name="" value="1">
+                <input class="form-control" type="number" name="ProsjQmiddel" value="1">
             </div>
         </div>
         <div class="row mb-4">
@@ -118,10 +127,10 @@ echo '
             </div>
             <small class="form-text col-1">km2</small>
             <div class="col-4">
-                <label class="col-form-label  d-flex justify-content-end" for="">Felt Areal</label>
+                <label class="col-form-label  d-flex justify-content-end" for="ProsjFeltAreal">Felt Areal</label>
             </div>
             <div class="col-2">
-                <input class="form-control" type="number" name="" value="1">
+                <input class="form-control" type="number" name="ProsjFeltAreal" value="1">
             </div>
         </div>
         <div class="row mb-4">
@@ -133,10 +142,10 @@ echo '
             </div>
             <small class="form-text col-1">%</small>
             <div class="col-4">
-                <label class="col-form-label  d-flex justify-content-end" for="">Snaufjellsandel</label>
+                <label class="col-form-label  d-flex justify-content-end" for="ProsjSnaufjellsandel">Snaufjellsandel</label>
             </div>
             <div class="col-2">
-                <input class="form-control" type="number" name="" value="1">
+                <input class="form-control" type="number" name="ProsjSnaufjellsandel" value="1">
             </div>
         </div>
         <div class="row mb-4">
@@ -148,10 +157,10 @@ echo '
             </div>
             <small class="form-text col-1">%</small>
             <div class="col-4">
-                <label class="col-form-label  d-flex justify-content-end" for="">Effektiv Sjøandel</label>
+                <label class="col-form-label  d-flex justify-content-end" for="ProsjEffSjoandel">Effektiv Sjøandel</label>
             </div>
             <div class="col-2">
-                <input class="form-control" type="number" name="" value="1">
+                <input class="form-control" type="number" name="ProsjEffSjoandel" value="1">
             </div>
         </div>
         <div class="row mb-4">
@@ -163,10 +172,10 @@ echo '
             </div>
             <small class="form-text col-1">m.o.h</small>
             <div class="col-4">
-                <label class="col-form-label  d-flex justify-content-end" for="">Max Kvote Felt</label>
+                <label class="col-form-label  d-flex justify-content-end" for="ProsjMaxKvote">Max Kvote Felt</label>
             </div>
             <div class="col-2">
-                <input class="form-control" type="number" name="" value="1">
+                <input class="form-control" type="number" name="ProsjMaxKvote" value="1">
             </div>
         </div>
         <div class="row mb-4">
@@ -178,28 +187,29 @@ echo '
             </div>
             <small class="form-text col-1">m.o.h</small>
             <div class="col-4">
-                <label class="col-form-label  d-flex justify-content-end" for="">Min Kvote Felt</label>
+                <label class="col-form-label  d-flex justify-content-end" for="ProsjMinKvote">Min Kvote Felt</label>
             </div>
             <div class="col-2">
-                <input class="form-control" type="number" name="" value="1">
+                <input class="form-control" type="number" name="ProsjMinKvote" value="1">
             </div>
         </div>
         <div class="row mb-4">
             <div class="col-9 pt-0">
-                <label class="col-form-label d-flex justify-content-end" for="">Feltlengde</label>
+                <label class="col-form-label d-flex justify-content-end" for="ProsjFeltlengde">Feltlengde</label>
             </div>
             <div class="col-2">
-                <input class="form-control" type="number" name="" value="1">
+                <input class="form-control" type="number" name="ProsjFeltlengde" value="1">
             </div>
         </div>
         <div class="row mb-4">
             <div class="col-9 pt-0">
-                <label class="col-form-label d-flex justify-content-end">Sjøandel</label>
+                <label class="col-form-label d-flex justify-content-end" for="ProsjSjøandel">Sjøandel</label>
             </div>
             <div class="col-2">
-                <input class="form-control" type="number" name="" value="1">
+                <input class="form-control" type="number" name="ProsjSjøandel" value="1">
             </div>
         </div>
+        <div class="row mb-4"></div>
         <div class="row mb-4">
             <div class="col-2">
                 <button name="hentMetadata" type="submit" class="ms-5 btn btn-primary">
@@ -236,8 +246,8 @@ echo '
 
 
 
-if(isset($_POST["btnSkaler"])){
-    Skaler();
+if(isset($_POST["Skaler"])){
+    Skaler($userDir);
 }
 
 if(isset($_POST["lagreMetadata"])){
@@ -245,7 +255,7 @@ if(isset($_POST["lagreMetadata"])){
 }
 
 if(isset($_POST["lagreProsjekt"])){
-    LagreMetadata($userDir, $project);
+    lagreProsjekt($userDir, $project);
 }
      
 ?>
@@ -262,6 +272,21 @@ if(isset($_POST["lagreProsjekt"])){
             <input class="form-control btn btn-primary"type="submit" name="btnSkaler" value="Skaler">
         </div>
     </form> -->
+    <form action="POST">
+        <div class="container">
+            <label for="ProsjAvr">ProsjAvr</label>
+            <input type="number">
+
+            <label for="ProsjAreal">ProsjAreal</label>
+            <input type="number">
+
+            <label for="RefAvr">RefAvr</label>
+            <input type="number">
+
+            <label for="RefAreal">RefAreal</label>
+            <input type="number">
+        </div>
+    </form>
 </body>
 </html>
 
@@ -276,7 +301,7 @@ function HentMetadata($userDir, $project){
     }
     // Finnes sikkert en bedre måte å gjøre dette på men fukkit
     $_SESSION['Malestasjon'] = $Malestasjon;
-    $Metadata = $userDir . "/projects/" . $project . "/" . "metadata" . $Malestasjon;
+    $Metadata = "MalestasjonerMeta". "/" . "MD_" . $Malestasjon;
     echo $Metadata;
     if(file_exists($Metadata)){
         $file = fopen($Metadata, "r");
@@ -340,11 +365,12 @@ function LagreMetadata($userDir, $project){
     fclose($fileWrite);
  
 }
-function Skaler(){
+function Skaler($userDir){
         $I = 0;
         $csv = 'malestasjoner/' . $_POST['Malestasjon'];
         $fileHandler = fopen($csv, "r");
-        $fileWrite = fopen("Skalert_" . $_POST['Malestasjon'], "w");
+        $fileWrite = fopen($userDir . "/projects" . "/" . $_GET["project"] . "Skalert_" . $_POST['Malestasjon'], "w");
+        echo $userDir . "/projects" . "/" . $_GET["project"] . "Skalert_" . $_POST['Malestasjon'];
         while(list($MaleDato, $MaleVerdi) = fgetcsv($fileHandler, 1024, ";")) {
             $SkalertVerdi = $MaleVerdi * $_POST['SkalerValue'];
             fwrite($fileWrite, $MaleDato . ",");
@@ -355,5 +381,22 @@ function Skaler(){
         fclose($fileWrite);
         fclose($fileHandler);
     }
+
+
+
+function lagreProsjekt($userDir, $project){
+    // Finnes sikkert en bedre måte å gjøre dette på men fukkit
+    $csv = $userDir . "/projects/" . $project . "/" . $project . "Data";
+    $fileWrite = fopen($csv, "w");
+    fwrite($fileWrite, "ProsjAntallMalinger;" . $_POST['ProsjAntallMalinger'] . "\n");
+    fwrite($fileWrite, "ProsjQmiddel;" . $_POST['ProsjQmiddel'] . "\n");
+    fwrite($fileWrite, "ProsjFeltAreal;" . $_POST['ProsjFeltAreal'] . "\n");
+    fwrite($fileWrite, "ProsjSnaufjellsAndel;" . $_POST['ProsjSnaufjellsAndel'] . "\n");
+    fwrite($fileWrite, "ProsjEffSjoandel;" . $_POST['ProsjEffSjoandel'] . "\n");
+    fwrite($fileWrite, "ProsjMaxKvote;" . $_POST['ProsjMaxKvote'] . "\n");
+    fwrite($fileWrite, "ProsjMinKvote;" . $_POST['ProsjMinKvote'] . "\n");
+    fclose($fileWrite);
+    
+}
 ?>
 
