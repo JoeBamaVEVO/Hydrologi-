@@ -19,14 +19,13 @@
         header("location: index.php");
     }
     $project = $_GET['project'];
-    $projectData = $userDir . "/projects/" . $project . "/" . $project . "Data";
-
+    $projectData = $userDir . "/projects/" . $project . "/" . $project . "Data.csv";
+ 
     if(file_exists($projectData)){
-        echo $projectData;
+        HentProsjektData($projectData, $project, $userDir);
     }
     else{
-        echo "Filen eksisterer ikke ";
-        echo $projectData;
+        echo "Filen eksisterer ikke";
     }
 
    
@@ -38,6 +37,16 @@
     $MaxKvote = $_SESSION['MaxKvote'];
     $MinKvote = $_SESSION['MinKvote'];
     $ValgtMalestasjon = $_SESSION['Malestasjon'];
+
+    $ProsjAntallMalinger = $_SESSION['ProsjAntallMalinger'];
+    $ProsjQmiddel = $_SESSION['ProsjQmiddel'];
+    $ProsjFeltAreal = $_SESSION['ProsjFeltAreal'];
+    $ProsjSnaufjellsAndel = $_SESSION['ProsjSnaufjellsAndel'];
+    $ProsjEffSjoandel = $_SESSION['ProsjEffSjoandel'];
+    $ProsjMaxKvote = $_SESSION['ProsjMaxKvote'];
+    $ProsjMinKvote = $_SESSION['ProsjMinKvote'];
+    $ProsjFeltlengde = $_SESSION['ProsjFeltlengde'];
+    $ProsjSjoandel = $_SESSION['ProsjSjoandel'];
 	?>
 </head>
 <body>
@@ -67,6 +76,10 @@ if(isset($_POST["hentMetadata"])){
     header("location: beregn.php?project=" . $project);
 }
 
+if(isset($_POST["hentProsjektData"])){
+    hentProsjektData($projectData, $userDir, $project);
+    header("location: beregn.php?project=" . $project);
+}
 
 // Tegner en form med alle input feltene
 echo '
@@ -100,7 +113,7 @@ echo '
                 <label class="col-form-label  d-flex justify-content-end" for="ProsjAntallMålinger">Antall Målinger</label>
             </div>
             <div class="col-2">
-                <input class="form-control" type="number" name="ProsjAntallMålinger" value="1">
+                <input class="form-control" type="number" name="ProsjAntallMalinger" value="1">
             </div>
         </div>
         <div class="row mb-4">
@@ -115,7 +128,7 @@ echo '
                 <label class="col-form-label  d-flex justify-content-end" for="">Qmiddel</label>
             </div>
             <div class="col-2">
-                <input class="form-control" type="number" name="ProsjQmiddel" value="1">
+                <input class="form-control" type="number" name="ProsjQmiddel"  value="' . $ProsjQmiddel . '" step="0.01">
             </div>
         </div>
         <div class="row mb-4">
@@ -130,7 +143,7 @@ echo '
                 <label class="col-form-label  d-flex justify-content-end" for="ProsjFeltAreal">Felt Areal</label>
             </div>
             <div class="col-2">
-                <input class="form-control" type="number" name="ProsjFeltAreal" value="1">
+                <input class="form-control" type="number" name="ProsjFeltAreal" value="'.$ProsjFeltAreal.'" step="0.01">
             </div>
         </div>
         <div class="row mb-4">
@@ -138,14 +151,14 @@ echo '
                 <label class="col-form-label d-flex justify-content-end pt-0" for="SnaufjellsAndel">Snaufjellsandel</label>
             </div>
             <div class="col-2">
-                <input class="form-control" type="number" name="SnaufjellsAndel" value="' . $SnaufjellsAndel . '" step="0.01">
+            <input class="form-control" type="number" name="SnaufjellsAndel" value="' . $SnaufjellsAndel .'" step="0.01">
             </div>
             <small class="form-text col-1">%</small>
             <div class="col-4">
-                <label class="col-form-label  d-flex justify-content-end" for="ProsjSnaufjellsandel">Snaufjellsandel</label>
+                <label class="col-form-label  d-flex justify-content-end" for="ProsjSnaufjellsAndel">Snaufjellsandel</label>
             </div>
             <div class="col-2">
-                <input class="form-control" type="number" name="ProsjSnaufjellsandel" value="1">
+                <input class="form-control" type="number" name="ProsjSnaufjellsAndel" value="'.$ProsjSnaufjellsAndel.'" step="0.01">
             </div>
         </div>
         <div class="row mb-4">
@@ -160,7 +173,7 @@ echo '
                 <label class="col-form-label  d-flex justify-content-end" for="ProsjEffSjoandel">Effektiv Sjøandel</label>
             </div>
             <div class="col-2">
-                <input class="form-control" type="number" name="ProsjEffSjoandel" value="1">
+                <input class="form-control" type="number" name="ProsjEffSjoandel" value="' . $ProsjEffSjoandel . '" step="0.01">
             </div>
         </div>
         <div class="row mb-4">
@@ -175,7 +188,7 @@ echo '
                 <label class="col-form-label  d-flex justify-content-end" for="ProsjMaxKvote">Max Kvote Felt</label>
             </div>
             <div class="col-2">
-                <input class="form-control" type="number" name="ProsjMaxKvote" value="1">
+                <input class="form-control" type="number" name="ProsjMaxKvote" value="'. $ProsjMaxKvote .'" step="0.01">
             </div>
         </div>
         <div class="row mb-4">
@@ -190,7 +203,7 @@ echo '
                 <label class="col-form-label  d-flex justify-content-end" for="ProsjMinKvote">Min Kvote Felt</label>
             </div>
             <div class="col-2">
-                <input class="form-control" type="number" name="ProsjMinKvote" value="1">
+                <input class="form-control" type="number" name="ProsjMinKvote" value="'.$ProsjMinKvote.'" step="0.01">
             </div>
         </div>
         <div class="row mb-4">
@@ -198,15 +211,15 @@ echo '
                 <label class="col-form-label d-flex justify-content-end" for="ProsjFeltlengde">Feltlengde</label>
             </div>
             <div class="col-2">
-                <input class="form-control" type="number" name="ProsjFeltlengde" value="1">
+                <input class="form-control" type="number" name="ProsjFeltlengde" value="'.$ProsjFeltlengde.'" step="0.01">
             </div>
         </div>
         <div class="row mb-4">
             <div class="col-9 pt-0">
-                <label class="col-form-label d-flex justify-content-end" for="ProsjSjøandel">Sjøandel</label>
+                <label class="col-form-label d-flex justify-content-end" for="ProsjSjoandel">Sjøandel</label>
             </div>
             <div class="col-2">
-                <input class="form-control" type="number" name="ProsjSjøandel" value="1">
+            <input class="form-control" type="number" name="ProsjSjoandel" value="'.$ProsjSjoandel.'" step="0.01">
             </div>
         </div>
         <div class="row mb-4"></div>
@@ -227,18 +240,10 @@ echo '
                 </button>
             </div>
             <div class="col-2">
-                <button name="lagGraf" type="submit" class="ms-5 btn btn-primary">
-                    Lag Grafer
+                <button name="hentProsjektData" type="submit" class="ms-5 btn btn-primary">
+                    Oppdater prosj data
                 </button>
-            </div>
-            
-        </div>
-        <div class="row mb-4">
-            <div class="col-2">
-                <button name="Skaler" type="submit" class="ms-5 btn btn-primary">
-                    Skaler Målinger
-                </button>
-            </div>
+            </div> 
         </div>
     </form>
 </div>
@@ -259,33 +264,30 @@ if(isset($_POST["lagreProsjekt"])){
 }
      
 ?>
-    <!-- <form method="POST">
-        <div class="form-group row">
-            <label class="col-sm-2 col-form-label" for="Malestasjon">Målestasjon</label>
-            <select class="form-control" name="Malestasjon">
-                <?php //echo $Malestasjoner; ?>
-            </select>
-        </div>
-        <div class="form-group">
-            <label for="SkalerValue">Skalerings Faktor</label>
-            <input class="form-control" type="number" step="any" name="SkalerValue">
-            <input class="form-control btn btn-primary"type="submit" name="btnSkaler" value="Skaler">
-        </div>
-    </form> -->
     <form action="POST">
-        <div class="container">
-            <label for="ProsjAvr">ProsjAvr</label>
-            <input type="number">
+        <div class="container d-flex">
+            <div class="container d-flex flex-column justify-content-end">
+                <label for="ProsjAvr">ProsjAvr</label>
+                <input class="w-25" type="number">
 
-            <label for="ProsjAreal">ProsjAreal</label>
-            <input type="number">
+                <label for="ProsjAreal">ProsjAreal</label>
+                <input class="w-25 "type="number">
+            </div>
+                <h1 class="align-self-center">X</h1>
+            <div class="container d-flex flex-column">
+                <label for="RefAvr">RefAvr</label>
+                <input class="w-25"  type="number">
 
-            <label for="RefAvr">RefAvr</label>
-            <input type="number">
-
-            <label for="RefAreal">RefAreal</label>
-            <input type="number">
+                <label for="RefAreal">RefAreal</label>
+                <input class="w-25 "type="number">
+            </div>
         </div>
+        <button name="Skaler" type="submit" class="ms-5 btn btn-primary">
+            Skaler Målinger
+        </button>
+        <button name="lagGraf" type="submit" class="float-end ms-5 btn btn-primary">
+            Lag Grafer
+        </button> 
     </form>
 </body>
 </html>
@@ -362,8 +364,7 @@ function LagreMetadata($userDir, $project){
     fwrite($fileWrite, "EffSjoandel;" . $_POST['EffSjoandel'] . "\n");
     fwrite($fileWrite, "MaxKvote;" . $_POST['MaxKvote'] . "\n");
     fwrite($fileWrite, "MinKvote;" . $_POST['MinKvote'] . "\n");
-    fclose($fileWrite);
- 
+    fclose($fileWrite); 
 }
 function Skaler($userDir){
         $I = 0;
@@ -383,20 +384,58 @@ function Skaler($userDir){
     }
 
 
-
 function lagreProsjekt($userDir, $project){
     // Finnes sikkert en bedre måte å gjøre dette på men fukkit
-    $csv = $userDir . "/projects/" . $project . "/" . $project . "Data";
+    $csv = $userDir . "/projects/" . $project . "/" . $project . "Data.csv";
     $fileWrite = fopen($csv, "w");
-    fwrite($fileWrite, "ProsjAntallMalinger;" . $_POST['ProsjAntallMalinger'] . "\n");
+    fwrite($fileWrite, "AntallMalinger;" . $_POST['AntallMalinger'] . "\n");
     fwrite($fileWrite, "ProsjQmiddel;" . $_POST['ProsjQmiddel'] . "\n");
     fwrite($fileWrite, "ProsjFeltAreal;" . $_POST['ProsjFeltAreal'] . "\n");
     fwrite($fileWrite, "ProsjSnaufjellsAndel;" . $_POST['ProsjSnaufjellsAndel'] . "\n");
     fwrite($fileWrite, "ProsjEffSjoandel;" . $_POST['ProsjEffSjoandel'] . "\n");
     fwrite($fileWrite, "ProsjMaxKvote;" . $_POST['ProsjMaxKvote'] . "\n");
     fwrite($fileWrite, "ProsjMinKvote;" . $_POST['ProsjMinKvote'] . "\n");
+    fwrite($fileWrite, "ProsjFeltlengde;" . $_POST['ProsjFeltlengde'] . "\n");
+    fwrite($fileWrite, "ProsjSjoandel;" . $_POST['ProsjSjoandel'] . "\n");
     fclose($fileWrite);
-    
+    }
+
+
+function HentProsjektData($projectData, $userDir, $project){
+$file2 = fopen($projectData, "r");
+while(list($key, $value) = fgetcsv($file2, 1024, ";")){
+    if($key == "AntallMalinger"){
+        $_SESSION['AntallMalinger'] = $value;
+    }
+    if($key == "ProsjQmiddel"){
+        $_SESSION['ProsjQmiddel'] = $value;
+    }
+    if($key == "ProsjFeltAreal"){
+        $_SESSION['ProsjFeltAreal'] = $value;
+    } 
+    if($key == "ProsjSnaufjellsAndel"){
+        $_SESSION['ProsjSnaufjellsAndel'] = $value;
+    }
+    if($key == "ProsjEffSjoandel"){
+        $_SESSION['ProsjEffSjoandel'] = $value;
+    }
+    if($key == "ProsjMaxKvote"){
+        $_SESSION['ProsjMaxKvote'] = $value;
+    }
+    if($key == "ProsjMinKvote"){
+        $_SESSION['ProsjMinKvote'] = $value;
+    }
+    if($key == "ProsjFeltlengde"){
+        $_SESSION['ProsjFeltlengde'] = $value;
+    }
+    if($key == "ProsjSjoandel"){
+        $_SESSION['ProsjSjoandel'] = $value;
+    }
 }
+fclose($file2);
+// header("location: beregn.php?project=" . $project);
+// exit();
+}
+
 ?>
 
