@@ -1,5 +1,82 @@
-form{
+.Hydroform{
+    display: flex;
+    justify-content: space-around;
+    /* align-items: center; */
+}
+
+
+
+body{
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+}
+
+/* Navbar styling */
+nav{
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    background-color: #ffffff;
+    color: #fff;
+    padding: 10px;
+}
+
+nav a{
+    color: #000000;
+    text-decoration: none;
+    margin: 0 10px;
+}
+
+/* Text */
+.header{
+    text-align: center;
+}
+
+/* Form Right */
+.FormRight{
+    align-items: end;
     display: flex;
     flex-direction: column;
+}
+/* Form Left */
+.FormLeft{
+    display: flex;
+    flex-direction: column;
+}
+
+/* Skalering */
+
+/* Skaleringleft */
+.SkaleringLeft{
+    display: flex;
+    flex-direction: column;
+}
+
+.input-group:nth-child(1){
+    margin-bottom: 1rem;
+}
+
+/* SkaleringRight */
+.SkaleringRight{
+    display: flex;
+    flex-direction: column;
+}
+
+
+.Skalering{
+    margin-top: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.SkaleringX{
+    padding-left: 3rem;
+    padding-right: 3rem;
+}
+
+.btn-groupSkalering{
+    display: flex;
+    justify-content: center;
     align-items: center;
 }
