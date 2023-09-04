@@ -43,20 +43,19 @@ $is_invalid = false;
     }
 ?>
 <body>
-<div class="loginForm d-flex justify-content-center">
-    <div class="d-flex flex-column">
-        <h1 class="mb-4">Log Inn</h1>
+    <div class="formCard">
+        <h1 class="header">Log Inn</h1>
         <?php if ($is_invalid) : ?>
             <em>Invalid email or password</em>
         <?php endif; ?>
-        <form  class="d-flex flex-column " action="" method="POST" novalidate>
+        <form  class="loginForm" action="" method="POST" novalidate>
             <label for="email">Email</label>
-            <input class="mb-4"type="email" name="email" value="<?= htmlspecialchars( $_POST["email"] ?? "")  ?>">
+            <input type="email" name="email" value="<?= htmlspecialchars( $_POST["email"] ?? "")  ?>">
             <label for="password">password</label>
-            <input class="mb-4"type="password" name="password">
-            <input class="mb-4"type="submit" name="submit" value="Submit">
+            <input type="password" name="password">
+            <input type="submit" name="submit" value="Submit">
         </form>
-        <p>Ingen bruker? registrer deg <a href="/signup.php">her</a></p>
+        <p class="textcenter">Ingen bruker? registrer deg <a href="/signup.php">her</a></p>
     </div>
 </div>
 </body>

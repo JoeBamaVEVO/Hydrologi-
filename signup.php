@@ -56,9 +56,9 @@ if(isset($_POST['submit'])) {
 }
 ?>
 <body>
-<div class="loginForm">
-    <h1>Opprett En Konto</h1>
-    <form action="" method="POST" novalidate>
+<div class="formCard">
+    <h1 class="header">Opprett En Konto</h1>
+    <form class="loginForm action="" method="POST" novalidate>
         <label for="fname">First Name</label>
         <input type="text" name="fname">
         <label for="Lname">Last Name</label>
