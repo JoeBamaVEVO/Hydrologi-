@@ -213,21 +213,19 @@ if(isset($_POST["lagreProsjekt"])){
                     <input class="w-25" type="number">
                 </div>
                 <div class="input-group">
-                    <label for="ProsjAreal">ProsjAreal</label>
-                    <input class="w-25 "type="number">
+                    <label for="RefAvr">RefAvr</label>
+                    <input class="w-25"  type="number">
                 </div>
             </div>
                 <h1 class="SkaleringX">X</h1>
             <div class="SkaleringRight"> 
-                <div class="container d-flex flex-column">
-                    <div class="input-group">
-                        <label for="RefAvr">RefAvr</label>
-                        <input class="w-25"  type="number">
-                    </div>
-                    <div class="input-group">
-                        <label for="RefAreal">RefAreal</label>
-                        <input class="w-25 "type="number">
-                    </div>
+                <div class="input-group">
+                    <label for="ProsjAreal">ProsjAreal</label>
+                    <input class="w-25 "type="number">
+                </div>
+                <div class="input-group">
+                    <label for="RefAreal">RefAreal</label>
+                    <input class="w-25 "type="number">
                 </div>
             </div>
         </div>
