@@ -25,7 +25,7 @@
         HentProsjektData($projectData, $project, $userDir);
     }
     else{
-        echo "Filen eksisterer ikke";
+        echo "Prosjekt filen eksisterer ikke";
     }
 
    
