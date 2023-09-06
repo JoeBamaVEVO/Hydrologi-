@@ -172,6 +172,7 @@ nav a{
     flex-direction: column;
 }
 
+
 .input-group:nth-child(1){
     margin-bottom: 1rem;
 }
@@ -201,6 +202,11 @@ nav a{
     align-items: center;
 }
 
+.skaleringFaktor{
+    text-align: center;
+    margin-bottom: 1.4rem;
+}
+
 
 /* Generell Css */
 
@@ -210,6 +216,7 @@ nav a{
     background-color: rgb(64, 64, 232);
     border-style: none;
     padding: 10px;
+    margin: 5px;
 }
 
 .btn:hover{

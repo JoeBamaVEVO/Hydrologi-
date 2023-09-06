@@ -70,17 +70,13 @@
         }
 
 // Skjekker om HentMetadata blir trykket på
-
 if(isset($_POST["hentMetadata"])){
     HentMetadata($userDir, $project);
-    header("location: beregn.php?project=" . $project);
 }
 
-if(isset($_POST["hentProsjektData"])){
-    hentProsjektData($projectData, $userDir, $project);
-    header("location: beregn.php?project=" . $project);
+if(isset($_POST["HentSkaleringData"])){
+    HentSkalering($userDir, $project);
 }
-
 // Tegner en form med alle input feltene
 echo '
 <h2 class="header">Hydrologi '. $project .'</h2>
@@ -134,10 +130,6 @@ echo '
                 <!-- HentMeta -->
                 <button name="hentMetadata" type="submit" class="ms-5 btn btn-primary">
                 Hent Metadata
-                </button>
-                <!-- LagreMeta -->
-                <button name="lagreMetadata" type="submit" class="ms-5 btn btn-primary">
-                    Lagre Metadata
                 </button>
             </div>
         </div>
@@ -209,29 +201,40 @@ if(isset($_POST["lagreProsjekt"])){
         <div class="Skalering">
             <div class="SkaleringLeft">
                 <div class="input-group">
-                    <label for="ProsjAvr">ProsjAvr</label>
-                    <input class="w-25" type="number">
+                    <label for="ProsjAvr">ProsjAvr</label> <br>
+                    <input class="w-25" type="number" step="0.01" value="<?php echo $ProsjFeltAreal ?>">
                 </div>
+                <span style="border-style: dashed; margin-bottom: 1rem;"></span>
                 <div class="input-group">
-                    <label for="RefAvr">RefAvr</label>
-                    <input class="w-25"  type="number">
+                    <input type="number" step="0.01" value="<?php echo $Qmiddel ?>">     <br>
+                    <label for="RefAvr">RefAvr</label> 
                 </div>
             </div>
-                <h1 class="SkaleringX">X</h1>
+            <h1 class="SkaleringX">X</h1>
             <div class="SkaleringRight"> 
                 <div class="input-group">
-                    <label for="ProsjAreal">ProsjAreal</label>
-                    <input class="w-25 "type="number">
+                    <label for="ProsjAreal">ProsjAreal</label> <br>
+                    <input class="w-25 "type="number" step="0.01" value="<?php echo $ProsjFeltAreal ?>">
                 </div>
+                <span style="border-style: dashed; margin-bottom: 1rem;"></span>
                 <div class="input-group">
+                    <input type="number" step="0.01" value="<?php echo $FeltAreal ?>"> <br>
                     <label for="RefAreal">RefAreal</label>
-                    <input class="w-25 "type="number">
                 </div>
+            </div>
+            <span class="SkaleringX"><h1>=</h1></span>
+            <div class="skaleringFaktor">
+                <label for="SkalerValue">Skalerings Faktor</label>
+                <br>
+                <input type="number" name="SkalerValue" value="1">
             </div>
         </div>
         <div class="btn-groupSkalering">
-            <button name="Skaler" type="submit" class="ms-5 btn btn-primary">
+            <button name="Skaler" type="submit" class="btn">
                 Skaler Målinger
+            </button>
+            <button name="HentSkaleringData" type="submit" class="btn">
+                Hent Skalering Data
             </button>
             <button name="lagGraf" type="submit" class="float-end ms-5 btn btn-primary">
                 Lag Grafer
@@ -386,6 +389,10 @@ while(list($key, $value) = fgetcsv($file2, 1024, ";")){
 fclose($file2);
 // header("location: beregn.php?project=" . $project);
 // exit();
+}
+
+function HentSkalering(){
+
 }
 
 ?>
