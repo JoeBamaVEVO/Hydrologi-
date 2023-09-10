@@ -47,6 +47,8 @@
     $ProsjMinKvote = $_SESSION['ProsjMinKvote'];
     $ProsjFeltlengde = $_SESSION['ProsjFeltlengde'];
     $ProsjSjoandel = $_SESSION['ProsjSjoandel'];
+    $SFaktor = $_SESSION['Sfaktor'];
+
 	?>
 </head>
 <body>
@@ -75,8 +77,12 @@ if(isset($_POST["hentMetadata"])){
 }
 
 if(isset($_POST["HentSkaleringData"])){
-    HentSkalering($userDir, $project);
+    HentSkalering($project);
 }
+
+
+
+
 // Tegner en form med alle input feltene
 echo '
 <h2 class="header">Hydrologi '. $project .'</h2>
@@ -184,7 +190,7 @@ echo '
 
 
 if(isset($_POST["Skaler"])){
-    Skaler($userDir);
+    Skaler($userDir, $ValgtMalestasjon);
 }
 
 if(isset($_POST["lagreMetadata"])){
@@ -194,15 +200,17 @@ if(isset($_POST["lagreMetadata"])){
 if(isset($_POST["lagreProsjekt"])){
     lagreProsjekt($userDir, $project);
 }
-     
+
+$_SESSION['Sfaktor'] = FinnSFaktor($ProsjFeltAreal, $Qmiddel, $ProsjQmiddel, $FeltAreal);
+
 ?>
 <div class="container">
-    <form class="SkaleringForm" action="POST">
+    <form class="SkaleringForm" method="POST">
         <div class="Skalering">
             <div class="SkaleringLeft">
                 <div class="input-group">
                     <label for="ProsjAvr">ProsjAvr</label> <br>
-                    <input class="w-25" type="number" step="0.01" value="<?php echo $ProsjFeltAreal ?>">
+                    <input class="w-25" type="number" step="0.01" value="<?php echo $ProsjQmiddel ?>">
                 </div>
                 <span style="border-style: dashed; margin-bottom: 1rem;"></span>
                 <div class="input-group">
@@ -226,7 +234,7 @@ if(isset($_POST["lagreProsjekt"])){
             <div class="skaleringFaktor">
                 <label for="SkalerValue">Skalerings Faktor</label>
                 <br>
-                <input type="number" name="SkalerValue" value="1">
+                <input type="number" step="0.0000000000000000000000000000000001" name="SkalerValue" value="<?php echo $SFaktor ?>">
             </div>
         </div>
         <div class="btn-groupSkalering">
@@ -320,12 +328,15 @@ function LagreMetadata($userDir, $project){
     fwrite($fileWrite, "MinKvote;" . $_POST['MinKvote'] . "\n");
     fclose($fileWrite); 
 }
-function Skaler($userDir){
+
+function Skaler($userDir, $ValgtMalestasjon){
+    if(isset($_POST['SkalerValue'])){
         $I = 0;
-        $csv = 'malestasjoner/' . $_POST['Malestasjon'];
+        $csv = 'malestasjoner/' . $ValgtMalestasjon;
+        echo $csv;
         $fileHandler = fopen($csv, "r");
-        $fileWrite = fopen($userDir . "/projects" . "/" . $_GET["project"] . "Skalert_" . $_POST['Malestasjon'], "w");
-        echo $userDir . "/projects" . "/" . $_GET["project"] . "Skalert_" . $_POST['Malestasjon'];
+        $fileWrite = fopen($userDir . "/projects" . "/" . $_GET["project"] . "/" . "Skalert_" . $_GET["project"], "w");
+        echo $userDir . "/projects" . "/" . $_GET["project"] . "/" . "Skalert_" . $ValgtMalestasjon;
         while(list($MaleDato, $MaleVerdi) = fgetcsv($fileHandler, 1024, ";")) {
             $SkalertVerdi = $MaleVerdi * $_POST['SkalerValue'];
             fwrite($fileWrite, $MaleDato . ",");
@@ -335,6 +346,10 @@ function Skaler($userDir){
         echo "Antall linjer prossesert: " . $I;
         fclose($fileWrite);
         fclose($fileHandler);
+    }
+    else{
+        echo "Du må skrive inn en skaleringsfaktor";
+    }
     }
 
 
@@ -391,8 +406,22 @@ fclose($file2);
 // exit();
 }
 
-function HentSkalering(){
+function HentSkalering($project){
+    header("location: beregn.php?project=" . $project);
+}
 
+function FinnSFaktor($ProsjFeltAreal, $Qmiddel, $ProsjQmiddel, $FeltAreal){
+    if(isset($ProsjFeltAreal, $Qmiddel, $ProsjQmiddel, $FeltAreal)){
+        $ArealForhold = $ProsjFeltAreal / $FeltAreal;
+        $QForhold = $ProsjQmiddel / $Qmiddel;
+        $SFaktor = $ArealForhold * $QForhold;
+
+        // echo "ArealForhold: " . $ArealForhold . "<br>";
+        // echo "QForhold: " . $QForhold . "<br>";
+        // echo "SFaktor: " . $SFaktor . "<br>";
+
+        return $SFaktor;    
+    }
 }
 
 ?>
