@@ -1,8 +1,5 @@
 <?php
-$host = 'phpmyadmin.fritun.no';
-$user = 'KristianAdmin';
-$pass = '5297Kris1234';
-$db = 'utregningsprogram';
+
 
 // Create database connection
 $mysqli = new mysqli($host, $user, $pass, $db);
