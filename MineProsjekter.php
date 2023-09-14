@@ -39,5 +39,6 @@
             <input type="text" name="newProjectName">
             <input type="submit" name="newProject" value="+">
         </form>
+    </div>
 </body>
 </html>

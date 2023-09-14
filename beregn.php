@@ -6,6 +6,12 @@
     <title>Document</title>
     <?php 
 	include "head.php";
+    $project = $_GET['project'];
+    $projectData = $userDir . "/projects/" . $project . "/" . $project . "Data.csv";
+
+    if(isset($_POST["lagGraf"])){
+        header("location: grafer.php?project=" . $project);
+    }
     if(!isset($_SESSION['idusers'])){            // Sjekker om du logget inn
         header("location: index.php");
     }
@@ -18,8 +24,6 @@
     if(!is_dir($userDir . "/projects" . "/" . $_GET["project"])){
         header("location: index.php");
     }
-    $project = $_GET['project'];
-    $projectData = $userDir . "/projects/" . $project . "/" . $project . "Data.csv";
  
     if(file_exists($projectData)){
         HentProsjektData($projectData, $project, $userDir);
@@ -250,7 +254,8 @@ $_SESSION['Sfaktor'] = FinnSFaktor($ProsjFeltAreal, $Qmiddel, $ProsjQmiddel, $Fe
         </div> 
     </form>
 </div>
-    
+
+
 </body>
 </html>
 
