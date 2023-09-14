@@ -341,7 +341,7 @@ function Skaler($userDir, $ValgtMalestasjon){
         echo $csv;
         $fileHandler = fopen($csv, "r");
         $fileWrite = fopen($userDir . "/projects" . "/" . $_GET["project"] . "/" . "Skalert_" . $_GET["project"], "w");
-        echo $userDir . "/projects" . "/" . $_GET["project"] . "/" . "Skalert_" . $ValgtMalestasjon;
+        echo $userDir . "/projects" . "/" . $_GET["project"] . "/" . "Skalert_" . $_GET["project"];
         while(list($MaleDato, $MaleVerdi) = fgetcsv($fileHandler, 1024, ";")) {
             $SkalertVerdi = $MaleVerdi * $_POST['SkalerValue'];
             fwrite($fileWrite, $MaleDato . ",");
