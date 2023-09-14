@@ -6,6 +6,12 @@
     <title>Document</title>
     <?php 
 	include "head.php";
+    $project = $_GET['project'];
+    $projectData = $userDir . "/projects/" . $project . "/" . $project . "Data.csv";
+
+    if(isset($_POST["lagGraf"])){
+        header("location: grafer.php?project=" . $project);
+    }
     if(!isset($_SESSION['idusers'])){            // Sjekker om du logget inn
         header("location: index.php");
     }
@@ -18,15 +24,12 @@
     if(!is_dir($userDir . "/projects" . "/" . $_GET["project"])){
         header("location: index.php");
     }
-    $project = $_GET['project'];
-    $projectData = $userDir . "/projects/" . $project . "/" . $project . "Data";
-
+ 
     if(file_exists($projectData)){
-        echo $projectData;
+        HentProsjektData($projectData, $project, $userDir);
     }
     else{
-        echo "Filen eksisterer ikke ";
-        echo $projectData;
+        echo "Prosjekt filen eksisterer ikke";
     }
 
    
@@ -38,6 +41,18 @@
     $MaxKvote = $_SESSION['MaxKvote'];
     $MinKvote = $_SESSION['MinKvote'];
     $ValgtMalestasjon = $_SESSION['Malestasjon'];
+
+    $ProsjAntallMalinger = $_SESSION['ProsjAntallMalinger'];
+    $ProsjQmiddel = $_SESSION['ProsjQmiddel'];
+    $ProsjFeltAreal = $_SESSION['ProsjFeltAreal'];
+    $ProsjSnaufjellsAndel = $_SESSION['ProsjSnaufjellsAndel'];
+    $ProsjEffSjoandel = $_SESSION['ProsjEffSjoandel'];
+    $ProsjMaxKvote = $_SESSION['ProsjMaxKvote'];
+    $ProsjMinKvote = $_SESSION['ProsjMinKvote'];
+    $ProsjFeltlengde = $_SESSION['ProsjFeltlengde'];
+    $ProsjSjoandel = $_SESSION['ProsjSjoandel'];
+    $SFaktor = $_SESSION['Sfaktor'];
+
 	?>
 </head>
 <body>
@@ -61,182 +76,114 @@
         }
 
 // Skjekker om HentMetadata blir trykket på
-
 if(isset($_POST["hentMetadata"])){
     HentMetadata($userDir, $project);
-    header("location: beregn.php?project=" . $project);
 }
+
+if(isset($_POST["HentSkaleringData"])){
+    HentSkalering($project);
+}
+
+
 
 
 // Tegner en form med alle input feltene
 echo '
+<h2 class="header">Hydrologi '. $project .'</h2>
 <div class="container">
-    <form method="POST" class="align-center">
-        <h2 class="mb-4 text-center">Hydrologi '. $project .'</h2>
-        <div class="row mb-4">
-            <div class="col-2">
-                <label class="col-form-label d-flex justify-content-end "for="Malestasjon">Målestasjon</label>
-            </div>
-            <div class="col-2">
-                <select class="form-control" name="Malestasjon" value="Klvtveitvatn.csv">
-                    ' . $Malestasjoner .'
-                </select>
-            </div>
-            <div class="col-5">
-                <label class="col-form-label  d-flex justify-content-end" for="">Prosjekt</label>
-            </div>
-            <div class="col-2">
-                <input class="form-control" type="text" name="" value="' . $project . '" disabled> 
-            </div>
-        </div>
-        <div class="row mb-4">
-            <div class="col-2">
-                <label class="col-form-label d-flex justify-content-end" for="AntallMålinger">Antall Målinger</label>
-            </div>
-            <div class="col-2">
-                <input class="form-control" type="number" name="AntallMålinger" value="1">
-            </div>
-            <div class="col-5">
-                <label class="col-form-label  d-flex justify-content-end" for="ProsjAntallMålinger">Antall Målinger</label>
-            </div>
-            <div class="col-2">
-                <input class="form-control" type="number" name="ProsjAntallMålinger" value="1">
-            </div>
-        </div>
-        <div class="row mb-4">
-            <div class="col-2">
-                <label class="col-form-label d-flex justify-content-end" for="Qmiddel">Qmiddel</label>
-            </div>
-            <div class="col-2">
+    <form class="Hydroform" method="POST">
+        <div class="FormLeft">
+            <label class="col-form-label d-flex justify-content-end "for="Malestasjon">Målestasjon</label>
+            <select class="form-control" name="Malestasjon" value="Klvtveitvatn.csv">
+                ' . $Malestasjoner .'
+            </select>
+            <!-- AntallMålinger -->
+            <label class="col-form-label d-flex justify-content-end" for="AntallMålinger">Antall Målinger</label>
+            <input class="form-control" type="number" name="AntallMålinger" value="1">
+            <!-- Qmiddel -->
+            <label class="col-form-label d-flex justify-content-end" for="Qmiddel">Qmiddel</label>
+            <div class="input-group"> 
                 <input class="form-control" type="number" name="Qmiddel" value="' . $Qmiddel . '" step="0.01" >
+                <small class="form-text col-1">m3/s km2</small>
             </div>
-            <small class="form-text col-1">m3/s km2</small>
-            <div class="col-4">
-                <label class="col-form-label  d-flex justify-content-end" for="">Qmiddel</label>
-            </div>
-            <div class="col-2">
-                <input class="form-control" type="number" name="ProsjQmiddel" value="1">
-            </div>
-        </div>
-        <div class="row mb-4">
-            <div class="col-2">
-                <label class="col-form-label d-flex justify-content-end" for="FeltAreal">Felt Areal</label>
-            </div>
-            <div class="col-2">
+            <!-- FeltAreal -->
+            <label class="col-form-label d-flex justify-content-end" for="FeltAreal">Felt Areal</label>
+            <div class="input-group">
                 <input class="form-control" type="number" name="FeltAreal" value="' . $FeltAreal .'" step="0.01">
+                <small class="form-text col-1">km2</small>
             </div>
-            <small class="form-text col-1">km2</small>
-            <div class="col-4">
-                <label class="col-form-label  d-flex justify-content-end" for="ProsjFeltAreal">Felt Areal</label>
+            <!-- SnaufjellsAndel -->
+            <label class="col-form-label d-flex justify-content-end pt-0" for="SnaufjellsAndel">Snaufjellsandel</label>
+            <div class="input-group">
+                <input class="form-control" type="number" name="SnaufjellsAndel" value="' . $SnaufjellsAndel .'" step="0.01">
+                <small class="form-text col-1">%</small>
             </div>
-            <div class="col-2">
-                <input class="form-control" type="number" name="ProsjFeltAreal" value="1">
-            </div>
-        </div>
-        <div class="row mb-4">
-            <div class="col-2 pt-0">
-                <label class="col-form-label d-flex justify-content-end pt-0" for="SnaufjellsAndel">Snaufjellsandel</label>
-            </div>
-            <div class="col-2">
-                <input class="form-control" type="number" name="SnaufjellsAndel" value="' . $SnaufjellsAndel . '" step="0.01">
-            </div>
-            <small class="form-text col-1">%</small>
-            <div class="col-4">
-                <label class="col-form-label  d-flex justify-content-end" for="ProsjSnaufjellsandel">Snaufjellsandel</label>
-            </div>
-            <div class="col-2">
-                <input class="form-control" type="number" name="ProsjSnaufjellsandel" value="1">
-            </div>
-        </div>
-        <div class="row mb-4">
-            <div class="col-2 pt-0">
-                <label class="col-form-label d-flex justify-content-end pt-0" for="EffSjøandel">Effektiv Sjøandel</label>
-            </div>
-            <div class="col-2">
+            <!-- EffSjoandel -->
+            <label class="col-form-label d-flex justify-content-end pt-0" for="EffSjøandel">Effektiv Sjøandel</label>
+            <div class="input-group">
                 <input class="form-control" type="number" name="EffSjoandel" value="' . $EffSjoandel . '" step="0.01">
+                <small class="form-text col-1">%</small>
             </div>
-            <small class="form-text col-1">%</small>
-            <div class="col-4">
-                <label class="col-form-label  d-flex justify-content-end" for="ProsjEffSjoandel">Effektiv Sjøandel</label>
-            </div>
-            <div class="col-2">
-                <input class="form-control" type="number" name="ProsjEffSjoandel" value="1">
-            </div>
-        </div>
-        <div class="row mb-4">
-            <div class="col-2 pt-0">
-                <label class="col-form-label d-flex justify-content-end pt-0" for="MaxKvote">Max Kvote Felt</label>
-            </div>
-            <div class="col-2">
+            <!-- MaxKvote -->
+            <label class="col-form-label d-flex justify-content-end pt-0" for="MaxKvote">Max Kvote Felt</label>
+            <div class="input-group">
                 <input class="form-control" type="number" name="MaxKvote" value="'. $MaxKvote .'" step="0.01">
+                <small>m.o.h</small>
             </div>
-            <small class="form-text col-1">m.o.h</small>
-            <div class="col-4">
-                <label class="col-form-label  d-flex justify-content-end" for="ProsjMaxKvote">Max Kvote Felt</label>
-            </div>
-            <div class="col-2">
-                <input class="form-control" type="number" name="ProsjMaxKvote" value="1">
-            </div>
-        </div>
-        <div class="row mb-4">
-            <div class="col-2 pt-0">
-                <label class="col-form-label d-flex justify-content-end pt-0" for="MinKvote">Min Kvote Felt</label>
-            </div>
-            <div class="col-2">
+            <!-- MinKvote -->
+            <label class="col-form-label d-flex justify-content-end pt-0" for="MinKvote">Min Kvote Felt</label>
+            <div class="input-group">
                 <input class="form-control" type="number" name="MinKvote" value="'.$MinKvote.'" step="0.01">
+                <small class="form-text col-1">m.o.h</small>
             </div>
-            <small class="form-text col-1">m.o.h</small>
-            <div class="col-4">
-                <label class="col-form-label  d-flex justify-content-end" for="ProsjMinKvote">Min Kvote Felt</label>
-            </div>
-            <div class="col-2">
-                <input class="form-control" type="number" name="ProsjMinKvote" value="1">
-            </div>
-        </div>
-        <div class="row mb-4">
-            <div class="col-9 pt-0">
-                <label class="col-form-label d-flex justify-content-end" for="ProsjFeltlengde">Feltlengde</label>
-            </div>
-            <div class="col-2">
-                <input class="form-control" type="number" name="ProsjFeltlengde" value="1">
-            </div>
-        </div>
-        <div class="row mb-4">
-            <div class="col-9 pt-0">
-                <label class="col-form-label d-flex justify-content-end" for="ProsjSjøandel">Sjøandel</label>
-            </div>
-            <div class="col-2">
-                <input class="form-control" type="number" name="ProsjSjøandel" value="1">
-            </div>
-        </div>
-        <div class="row mb-4"></div>
-        <div class="row mb-4">
-            <div class="col-2">
+            <div class="btn-group">
+                <!-- HentMeta -->
                 <button name="hentMetadata" type="submit" class="ms-5 btn btn-primary">
-                    Hent Metadata
+                Hent Metadata
                 </button>
             </div>
-            <div class="col-2">
-                <button name="lagreMetadata" type="submit" class="ms-5 btn btn-primary">
-                    Lagre Metadata
-                </button>
-            </div>
-            <div class="col-5">
+        </div>
+        <div class="FormRight">
+            <!-- Prosjekt -->
+            <label class="col-form-label  d-flex justify-content-end" for="">Prosjekt</label>
+            <input class="form-control" type="text" name="" value="' . $project . '" disabled> 
+            <!-- AntallMålinger -->
+            <label class="col-form-label  d-flex justify-content-end" for="ProsjAntallMålinger">Antall Målinger</label>
+            <input class="form-control" type="number" name="ProsjAntallMalinger" value="1">
+            <!-- Qmiddel -->
+            <label class="col-form-label  d-flex justify-content-end" for="">Qmiddel</label>
+            <input class="form-control" type="number" name="ProsjQmiddel"  value="' . $ProsjQmiddel . '" step="0.01">
+            <!-- FeltAreal -->
+            <label class="col-form-label  d-flex justify-content-end" for="ProsjFeltAreal">Felt Areal</label>
+            <input class="form-control" type="number" name="ProsjFeltAreal" value="'.$ProsjFeltAreal.'" step="0.01">
+            <!-- Snaufjellsandel -->    
+            <label class="col-form-label  d-flex justify-content-end" for="ProsjSnaufjellsAndel">Snaufjellsandel</label>
+            <input class="form-control" type="number" name="ProsjSnaufjellsAndel" value="'.$ProsjSnaufjellsAndel.'" step="0.01">
+            <!-- EffSjøandel -->
+            <label class="col-form-label  d-flex justify-content-end" for="ProsjEffSjoandel">Effektiv Sjøandel</label>
+            <input class="form-control" type="number" name="ProsjEffSjoandel" value="' . $ProsjEffSjoandel . '" step="0.01">    
+            <!--MaxKvote  -->
+            <label class="col-form-label  d-flex justify-content-end" for="ProsjMaxKvote">Max Kvote Felt</label>
+            <input class="form-control" type="number" name="ProsjMaxKvote" value="'. $ProsjMaxKvote .'" step="0.01">
+            <!-- MinKvote -->
+            <label class="col-form-label  d-flex justify-content-end" for="ProsjMinKvote">Min Kvote Felt</label>
+            <input class="form-control" type="number" name="ProsjMinKvote" value="'.$ProsjMinKvote.'" step="0.01">
+
+            <!-- FeltLendge -->
+            <label class="col-form-label d-flex justify-content-end" for="ProsjFeltlengde">Feltlengde</label>
+            <input class="form-control" type="number" name="ProsjFeltlengde" value="'.$ProsjFeltlengde.'" step="0.01">
+
+            <!-- sjøandel -->
+            <label class="col-form-label d-flex justify-content-end" for="ProsjSjoandel">Sjøandel</label>
+            <input class="form-control" type="number" name="ProsjSjoandel" value="'.$ProsjSjoandel.'" step="0.01">
+            <div class="btn-group">
+                <!-- LagreProsjekt -->
                 <button name="lagreProsjekt" type="submit" class="float-end ms-5 btn btn-primary">
                     Lagre Prosjekt
                 </button>
-            </div>
-            <div class="col-2">
-                <button name="lagGraf" type="submit" class="ms-5 btn btn-primary">
-                    Lag Grafer
-                </button>
-            </div>
-            
-        </div>
-        <div class="row mb-4">
-            <div class="col-2">
-                <button name="Skaler" type="submit" class="ms-5 btn btn-primary">
-                    Skaler Målinger
+                <!-- HentProsjektData -->
+                <button name="hentProsjektData" type="submit" class="ms-5 btn btn-primary">
+                    Oppdater prosj data
                 </button>
             </div>
         </div>
@@ -247,7 +194,7 @@ echo '
 
 
 if(isset($_POST["Skaler"])){
-    Skaler($userDir);
+    Skaler($userDir, $ValgtMalestasjon);
 }
 
 if(isset($_POST["lagreMetadata"])){
@@ -257,36 +204,58 @@ if(isset($_POST["lagreMetadata"])){
 if(isset($_POST["lagreProsjekt"])){
     lagreProsjekt($userDir, $project);
 }
-     
+
+$_SESSION['Sfaktor'] = FinnSFaktor($ProsjFeltAreal, $Qmiddel, $ProsjQmiddel, $FeltAreal);
+
 ?>
-    <!-- <form method="POST">
-        <div class="form-group row">
-            <label class="col-sm-2 col-form-label" for="Malestasjon">Målestasjon</label>
-            <select class="form-control" name="Malestasjon">
-                <?php //echo $Malestasjoner; ?>
-            </select>
+<div class="container">
+    <form class="SkaleringForm" method="POST">
+        <div class="Skalering">
+            <div class="SkaleringLeft">
+                <div class="input-group">
+                    <label for="ProsjAvr">ProsjAvr</label> <br>
+                    <input class="w-25" type="number" step="0.01" value="<?php echo $ProsjQmiddel ?>">
+                </div>
+                <span style="border-style: dashed; margin-bottom: 1rem;"></span>
+                <div class="input-group">
+                    <input type="number" step="0.01" value="<?php echo $Qmiddel ?>">     <br>
+                    <label for="RefAvr">RefAvr</label> 
+                </div>
+            </div>
+            <h1 class="SkaleringX">X</h1>
+            <div class="SkaleringRight"> 
+                <div class="input-group">
+                    <label for="ProsjAreal">ProsjAreal</label> <br>
+                    <input class="w-25 "type="number" step="0.01" value="<?php echo $ProsjFeltAreal ?>">
+                </div>
+                <span style="border-style: dashed; margin-bottom: 1rem;"></span>
+                <div class="input-group">
+                    <input type="number" step="0.01" value="<?php echo $FeltAreal ?>"> <br>
+                    <label for="RefAreal">RefAreal</label>
+                </div>
+            </div>
+            <span class="SkaleringX"><h1>=</h1></span>
+            <div class="skaleringFaktor">
+                <label for="SkalerValue">Skalerings Faktor</label>
+                <br>
+                <input type="number" step="0.0000000000000000000000000000000001" name="SkalerValue" value="<?php echo $SFaktor ?>">
+            </div>
         </div>
-        <div class="form-group">
-            <label for="SkalerValue">Skalerings Faktor</label>
-            <input class="form-control" type="number" step="any" name="SkalerValue">
-            <input class="form-control btn btn-primary"type="submit" name="btnSkaler" value="Skaler">
-        </div>
-    </form> -->
-    <form action="POST">
-        <div class="container">
-            <label for="ProsjAvr">ProsjAvr</label>
-            <input type="number">
-
-            <label for="ProsjAreal">ProsjAreal</label>
-            <input type="number">
-
-            <label for="RefAvr">RefAvr</label>
-            <input type="number">
-
-            <label for="RefAreal">RefAreal</label>
-            <input type="number">
-        </div>
+        <div class="btn-groupSkalering">
+            <button name="Skaler" type="submit" class="btn">
+                Skaler Målinger
+            </button>
+            <button name="HentSkaleringData" type="submit" class="btn">
+                Hent Skalering Data
+            </button>
+            <button name="lagGraf" type="submit" class="float-end ms-5 btn btn-primary">
+                Lag Grafer
+            </button>
+        </div> 
     </form>
+</div>
+
+
 </body>
 </html>
 
@@ -362,15 +331,17 @@ function LagreMetadata($userDir, $project){
     fwrite($fileWrite, "EffSjoandel;" . $_POST['EffSjoandel'] . "\n");
     fwrite($fileWrite, "MaxKvote;" . $_POST['MaxKvote'] . "\n");
     fwrite($fileWrite, "MinKvote;" . $_POST['MinKvote'] . "\n");
-    fclose($fileWrite);
- 
+    fclose($fileWrite); 
 }
-function Skaler($userDir){
+
+function Skaler($userDir, $ValgtMalestasjon){
+    if(isset($_POST['SkalerValue'])){
         $I = 0;
-        $csv = 'malestasjoner/' . $_POST['Malestasjon'];
+        $csv = 'malestasjoner/' . $ValgtMalestasjon;
+        echo $csv;
         $fileHandler = fopen($csv, "r");
-        $fileWrite = fopen($userDir . "/projects" . "/" . $_GET["project"] . "Skalert_" . $_POST['Malestasjon'], "w");
-        echo $userDir . "/projects" . "/" . $_GET["project"] . "Skalert_" . $_POST['Malestasjon'];
+        $fileWrite = fopen($userDir . "/projects" . "/" . $_GET["project"] . "/" . "Skalert_" . $_GET["project"], "w");
+        echo $userDir . "/projects" . "/" . $_GET["project"] . "/" . "Skalert_" . $_GET["project"];
         while(list($MaleDato, $MaleVerdi) = fgetcsv($fileHandler, 1024, ";")) {
             $SkalertVerdi = $MaleVerdi * $_POST['SkalerValue'];
             fwrite($fileWrite, $MaleDato . ",");
@@ -381,22 +352,82 @@ function Skaler($userDir){
         fclose($fileWrite);
         fclose($fileHandler);
     }
-
+    else{
+        echo "Du må skrive inn en skaleringsfaktor";
+    }
+    }
 
 
 function lagreProsjekt($userDir, $project){
     // Finnes sikkert en bedre måte å gjøre dette på men fukkit
-    $csv = $userDir . "/projects/" . $project . "/" . $project . "Data";
+    $csv = $userDir . "/projects/" . $project . "/" . $project . "Data.csv";
     $fileWrite = fopen($csv, "w");
-    fwrite($fileWrite, "ProsjAntallMalinger;" . $_POST['ProsjAntallMalinger'] . "\n");
+    fwrite($fileWrite, "AntallMalinger;" . $_POST['AntallMalinger'] . "\n");
     fwrite($fileWrite, "ProsjQmiddel;" . $_POST['ProsjQmiddel'] . "\n");
     fwrite($fileWrite, "ProsjFeltAreal;" . $_POST['ProsjFeltAreal'] . "\n");
     fwrite($fileWrite, "ProsjSnaufjellsAndel;" . $_POST['ProsjSnaufjellsAndel'] . "\n");
     fwrite($fileWrite, "ProsjEffSjoandel;" . $_POST['ProsjEffSjoandel'] . "\n");
     fwrite($fileWrite, "ProsjMaxKvote;" . $_POST['ProsjMaxKvote'] . "\n");
     fwrite($fileWrite, "ProsjMinKvote;" . $_POST['ProsjMinKvote'] . "\n");
+    fwrite($fileWrite, "ProsjFeltlengde;" . $_POST['ProsjFeltlengde'] . "\n");
+    fwrite($fileWrite, "ProsjSjoandel;" . $_POST['ProsjSjoandel'] . "\n");
     fclose($fileWrite);
-    
+    }
+
+
+function HentProsjektData($projectData, $userDir, $project){
+$file2 = fopen($projectData, "r");
+while(list($key, $value) = fgetcsv($file2, 1024, ";")){
+    if($key == "AntallMalinger"){
+        $_SESSION['AntallMalinger'] = $value;
+    }
+    if($key == "ProsjQmiddel"){
+        $_SESSION['ProsjQmiddel'] = $value;
+    }
+    if($key == "ProsjFeltAreal"){
+        $_SESSION['ProsjFeltAreal'] = $value;
+    } 
+    if($key == "ProsjSnaufjellsAndel"){
+        $_SESSION['ProsjSnaufjellsAndel'] = $value;
+    }
+    if($key == "ProsjEffSjoandel"){
+        $_SESSION['ProsjEffSjoandel'] = $value;
+    }
+    if($key == "ProsjMaxKvote"){
+        $_SESSION['ProsjMaxKvote'] = $value;
+    }
+    if($key == "ProsjMinKvote"){
+        $_SESSION['ProsjMinKvote'] = $value;
+    }
+    if($key == "ProsjFeltlengde"){
+        $_SESSION['ProsjFeltlengde'] = $value;
+    }
+    if($key == "ProsjSjoandel"){
+        $_SESSION['ProsjSjoandel'] = $value;
+    }
 }
+fclose($file2);
+// header("location: beregn.php?project=" . $project);
+// exit();
+}
+
+function HentSkalering($project){
+    header("location: beregn.php?project=" . $project);
+}
+
+function FinnSFaktor($ProsjFeltAreal, $Qmiddel, $ProsjQmiddel, $FeltAreal){
+    if(isset($ProsjFeltAreal, $Qmiddel, $ProsjQmiddel, $FeltAreal)){
+        $ArealForhold = $ProsjFeltAreal / $FeltAreal;
+        $QForhold = $ProsjQmiddel / $Qmiddel;
+        $SFaktor = $ArealForhold * $QForhold;
+
+        // echo "ArealForhold: " . $ArealForhold . "<br>";
+        // echo "QForhold: " . $QForhold . "<br>";
+        // echo "SFaktor: " . $SFaktor . "<br>";
+
+        return $SFaktor;    
+    }
+}
+
 ?>
 
