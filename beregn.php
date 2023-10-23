@@ -11,8 +11,9 @@
 
     if(isset($_POST["lagGraf"])){
         header("location: grafer.php?project=" . $project);
+        exit;
     }
-    if(!isset($_SESSION['idusers'])){            // Sjekker om du logget inn
+    if(!isset($_SESSION['idusers'])){ // Sjekker om du logget inn
         header("location: index.php");
     }
     if(empty($_GET['project'])){
@@ -75,7 +76,7 @@
             }
         }
 
-// Skjekker om HentMetadata blir trykket på
+// Sjekker om HentMetadata blir trykket på
 if(isset($_POST["hentMetadata"])){
     HentMetadata($userDir, $project);
 }
@@ -334,6 +335,7 @@ function LagreMetadata($userDir, $project){
     fclose($fileWrite); 
 }
 
+// TODO Rund av tall til 4 desimaler i skalerte CSV filen kanskje?
 function Skaler($userDir, $ValgtMalestasjon){
     if(isset($_POST['SkalerValue'])){
         $I = 0;
