@@ -206,6 +206,7 @@ if(isset($_POST["lagreProsjekt"])){
     lagreProsjekt($userDir, $project);
 }
 
+// Her setter vi Skaleringsfaktor som en session variabel
 $_SESSION['Sfaktor'] = FinnSFaktor($ProsjFeltAreal, $Qmiddel, $ProsjQmiddel, $FeltAreal);
 
 ?>
@@ -335,7 +336,6 @@ function LagreMetadata($userDir, $project){
     fclose($fileWrite); 
 }
 
-// TODO Rund av tall til 4 desimaler i skalerte CSV filen kanskje?
 function Skaler($userDir, $ValgtMalestasjon, $project){
     if(isset($_POST['SkalerValue'])){
         // Her henter vi ut skaleringsfaktoren fra input feltet
@@ -358,6 +358,8 @@ function Skaler($userDir, $ValgtMalestasjon, $project){
         foreach($MVerdi as $index => $Verdi){
             // Vi skriver til CSV filen ved å gange hver måleverdi med skaleringsfaktoren
             $SkalertVerdi = $Verdi * $SkalerValue;
+            // Vi runder ned til 4 desimaler
+            round($SkalertVerdi, 4);
             // Vi skriver til CSV filen
             fputcsv($fileWrite, array($MDato[$index], $SkalertVerdi));
         }
@@ -427,14 +429,15 @@ function HentSkalering($project){
 }
 
 function FinnSFaktor($ProsjFeltAreal, $Qmiddel, $ProsjQmiddel, $FeltAreal){
+    // Sjekker om alle variablene er satt
     if(isset($ProsjFeltAreal, $Qmiddel, $ProsjQmiddel, $FeltAreal)){
+        // Regner ut areal forhold
         $ArealForhold = $ProsjFeltAreal / $FeltAreal;
+        // Regner ut Q forhold
         $QForhold = $ProsjQmiddel / $Qmiddel;
+        // Regner ut Skaleringsfaktor faktor
         $SFaktor = $ArealForhold * $QForhold;
 
-        // echo "ArealForhold: " . $ArealForhold . "<br>";
-        // echo "QForhold: " . $QForhold . "<br>";
-        // echo "SFaktor: " . $SFaktor . "<br>";
 
         return $SFaktor;    
     }
