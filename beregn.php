@@ -195,7 +195,7 @@ echo '
 
 
 if(isset($_POST["Skaler"])){
-    Skaler($userDir, $ValgtMalestasjon);
+   Skaler($userDir, $ValgtMalestasjon, $project);
 }
 
 if(isset($_POST["lagreMetadata"])){
@@ -336,23 +336,32 @@ function LagreMetadata($userDir, $project){
 }
 
 // TODO Rund av tall til 4 desimaler i skalerte CSV filen kanskje?
-function Skaler($userDir, $ValgtMalestasjon){
+function Skaler($userDir, $ValgtMalestasjon, $project){
     if(isset($_POST['SkalerValue'])){
-        $I = 0;
-        $csv = 'malestasjoner/' . $ValgtMalestasjon;
-        echo $csv;
-        $fileHandler = fopen($csv, "r");
-        $fileWrite = fopen($userDir . "/projects" . "/" . $_GET["project"] . "/" . "Skalert_" . $_GET["project"], "w");
-        echo $userDir . "/projects" . "/" . $_GET["project"] . "/" . "Skalert_" . $_GET["project"];
-        while(list($MaleDato, $MaleVerdi) = fgetcsv($fileHandler, 1024, ";")) {
-            $SkalertVerdi = $MaleVerdi * $_POST['SkalerValue'];
-            fwrite($fileWrite, $MaleDato . ",");
-            fwrite($fileWrite, $SkalertVerdi . "\n");
-            $I++;
+        // Her henter vi ut skaleringsfaktoren fra input feltet
+        $SkalerValue = $_POST['SkalerValue'];
+        // Her henter vi ut måledata fra CSV filen
+        $Stasjon = "Malestasjoner/" . $ValgtMalestasjon;
+        // vi åpner Filehandler for å lese filen
+        $FileHandler = fopen($Stasjon, "r");
+        while(list($MaleDato, $MaleVerdi) = fgetcsv($FileHandler, 1024, ",")) {
+            // Vi legger til måleverdi i en array
+            $MVerdi[] = $MaleVerdi;
+            // Vi legger til Måledato i en array
+            $MDato[] = $MaleDato;
         }
-        echo "Antall linjer prossesert: " . $I;
+        // Vi lukker filehandler og kan nå bruke arrayene
+        fclose($FileHandler);
+        // Vi lager en CSV fil som vi skal skrive til
+        $csv = $userDir . "/projects/" . $project . "/" . "Skalert_" . $project;
+        $fileWrite = fopen($csv, "w");
+        foreach($MVerdi as $index => $Verdi){
+            // Vi skriver til CSV filen ved å gange hver måleverdi med skaleringsfaktoren
+            $SkalertVerdi = $Verdi * $SkalerValue;
+            // Vi skriver til CSV filen
+            fputcsv($fileWrite, array($MDato[$index], $SkalertVerdi));
+        }
         fclose($fileWrite);
-        fclose($fileHandler);
     }
     else{
         echo "Du må skrive inn en skaleringsfaktor";
