@@ -51,10 +51,10 @@ fclose($fileHandler2);
 
 // Her skal vi jobbe på Varighetsgrafen
 
-// Her henter vi ut Variasjonskurven
+// Her henter vi ut Varighetskurve data
 $csv = $projectDir . "/TabelldataVarighet.csv";
-$fileHandler3 = fopen($csv, "r");
-while(list($Verdi, $Prosent) = fgetcsv($fileHandler3, 1024, ",")){
+$fileHandler = fopen($csv, "r");
+while(list($Verdi, $Prosent) = fgetcsv($fileHandler, 1024, ",")){
     $VarighhetData[] = array("y" => $Verdi, "x" => $Prosent);
 }
 
@@ -72,12 +72,56 @@ $fileHandler = fopen($csv, "r");
 while(list($Verdi, $Prosent) = fgetcsv($fileHandler, 1024, ",")){
     $SumLavereData[] = array("y" => $Verdi, "x" => $Prosent);
 }
-// Her printer vi ut Q-Median. Denne kommer fra filen GrafVarighet.php
-echo "QMedian: " . $Qmedian . "<br>";
 
 
-// Her printer vi ut 5-Persentil. Denne kommer fra filen GrafVarighet.php
-echo "5 Persentil: " . $Persentil5 . "<br>";
+
+// Her henter vi ut Varighetskurve data for sommerhalvåret
+$csv = $projectDir . "/TabelldataVarighetSommer.csv";
+$fileHandler = fopen($csv, "r");
+while(list($Verdi, $Prosent) = fgetcsv($fileHandler, 1024, ",")){
+    $VarighhetDataSommer[] = array("y" => $Verdi, "x" => $Prosent);
+}
+
+// Her henter vi ut slukeevne data
+$csv = $projectDir . "/SlukeevneSommer.csv";
+echo $csv;
+$fileHandler = fopen($csv, "r");
+while(list($Verdi, $Prosent) = fgetcsv($fileHandler, 1024, ",")){
+    $SlukeevneDataSommer[] = array("y" => $Verdi, "x" => $Prosent);
+}
+
+// Her henter vi ut SumLavere
+$csv = $projectDir . "/SumLavereSommer.csv";
+$fileHandler = fopen($csv, "r");
+while(list($Verdi, $Prosent) = fgetcsv($fileHandler, 1024, ",")){
+    $SumLavereDataSommer[] = array("y" => $Verdi, "x" => $Prosent);
+}
+
+
+// Her henter vi ut Varighetskurve data for vinterhalvåret
+$csv = $projectDir . "/TabelldataVarighetVinter.csv";
+$fileHandler = fopen($csv, "r");
+while(list($Verdi, $Prosent) = fgetcsv($fileHandler, 1024, ",")){
+    $VarighhetDataVinter[] = array("y" => $Verdi, "x" => $Prosent);
+}
+
+// Her henter vi ut slukeevne data
+$csv = $projectDir . "/SlukeevneVinter.csv";
+echo $csv;
+$fileHandler = fopen($csv, "r");
+while(list($Verdi, $Prosent) = fgetcsv($fileHandler, 1024, ",")){
+    $SlukeevneDataVinter[] = array("y" => $Verdi, "x" => $Prosent);
+}
+
+// Her henter vi ut SumLavere
+$csv = $projectDir . "/SumLavereVinter.csv";
+$fileHandler = fopen($csv, "r");
+while(list($Verdi, $Prosent) = fgetcsv($fileHandler, 1024, ",")){
+    $SumLavereDataVinter[] = array("y" => $Verdi, "x" => $Prosent);
+}
+
+
+
 
 $Diagram2Overskrift = "Middel og minimum avrenning fordelt over årets dager i årene " . $StartÅr . " til " . $SluttÅr;
 $Diagram3Overskrift = "Maximum avrenning fordelt over årets dager i årene " . $StartÅr . " til " . $SluttÅr;
@@ -225,6 +269,7 @@ $Diagram3Overskrift = "Maximum avrenning fordelt over årets dager i årene " . 
                 // Tegner Graf3
                 chart3.render();
 
+                // Tegner Graf4
                 let LW = 2;  // Variable for line width
                 var chart4 = new CanvasJS.Chart("chartContainer4", {
                     animationEnabled: true,
@@ -280,8 +325,126 @@ $Diagram3Overskrift = "Maximum avrenning fordelt over årets dager i årene " . 
                     }
                 ],
                 });
+
                 chart4.render();
-                                
+
+                var chartVarighetSommer = new CanvasJS.Chart("chartContainerSommer", {
+                    animationEnabled: true,
+                    theme: "light2",
+                    title:{
+                        text: "Varighetskurve for sommerhalvåret"
+                    },
+                    axisX:{
+                        minimum: 0,
+                        maximum: 100,
+                        title: "Prosent",
+                        interval: 10,
+                    },
+                    axisY:{
+                        minimum: 0,
+                    },
+                    data: [{        
+                        type: "line",
+                        lineThickness: LW,
+                        title : "Varighetskurve",
+                        showInLegend: true,
+                        name: "Varighetskurve",
+                        indexLabelFontSize: 16,
+                        dataPoints: <?php echo json_encode($VarighhetDataSommer, JSON_NUMERIC_CHECK); ?>
+                    },
+                    {
+                        lineThickness: LW,
+                        type: "spline",
+                        title : "Slukeevne",
+                        color: "#debb0d",
+                        name: "Slukeevne",
+                        showInLegend: true,
+                        indexLabelFontSize: 16,
+                        dataPoints: <?php echo json_encode($SlukeevneDataSommer, JSON_NUMERIC_CHECK); ?>
+                    },
+                    {
+                        lineThickness: LW,
+                        type: "spline",
+                        title : "Sum Lavere",
+                        showInLegend: true,
+                        name : "Sum Lavere",
+                        indexLabelFontSize: 16,
+                        dataPoints: <?php echo json_encode($SumLavereDataSommer, JSON_NUMERIC_CHECK); ?>
+                    },
+                    {
+                        lineThickness: LW,
+                        type: "line",
+                        title : "Qmiddel",
+                        showInLegend: true,
+                        name : "Qmiddel",
+                        indexLabelFontSize: 16,
+                        dataPoints: <?php echo json_encode($QmiddelDataSommer, JSON_NUMERIC_CHECK); ?>
+                    }
+                ],
+                });
+
+                chartVarighetSommer.render();
+
+
+
+                var chartVarighetVinter = new CanvasJS.Chart("chartContainerVinter", {
+                    animationEnabled: true,
+                    theme: "light2",
+                    title:{
+                        text: "Varighetskurve for vinterhalvåret"
+                    },
+                    axisX:{
+                        minimum: 0,
+                        maximum: 100,
+                        title: "Prosent",
+                        interval: 10,
+                    },
+                    axisY:{
+                        minimum: 0,
+                    },
+                    data: [{        
+                        type: "line",
+                        lineThickness: LW,
+                        title : "Varighetskurve",
+                        showInLegend: true,
+                        name: "Varighetskurve",
+                        indexLabelFontSize: 16,
+                        dataPoints: <?php echo json_encode($VarighhetDataVinter, JSON_NUMERIC_CHECK); ?>
+                    },
+                    {
+                        lineThickness: LW,
+                        type: "spline",
+                        title : "Slukeevne",
+                        color: "#debb0d",
+                        name: "Slukeevne",
+                        showInLegend: true,
+                        indexLabelFontSize: 16,
+                        dataPoints: <?php echo json_encode($SlukeevneDataVinter, JSON_NUMERIC_CHECK); ?>
+                    },
+                    {
+                        lineThickness: LW,
+                        type: "spline",
+                        title : "Sum Lavere",
+                        showInLegend: true,
+                        name : "Sum Lavere",
+                        indexLabelFontSize: 16,
+                        dataPoints: <?php echo json_encode($SumLavereDataVinter, JSON_NUMERIC_CHECK); ?>
+                    },
+                    {
+                        lineThickness: LW,
+                        type: "line",
+                        title : "Qmiddel",
+                        showInLegend: true,
+                        name : "Qmiddel",
+                        indexLabelFontSize: 16,
+                        dataPoints: <?php echo json_encode($QmiddelDataVinter, JSON_NUMERIC_CHECK); ?>
+                    }
+                ],
+                });
+
+                chartVarighetVinter.render();
+
+
                 document.getElementById("download1").addEventListener('click', function() {
                     chart1.exportChart({format: "jpg"}); 
                 })
@@ -292,19 +455,41 @@ $Diagram3Overskrift = "Maximum avrenning fordelt over årets dager i årene " . 
                     chart3.exportChart({format: "jpg"}); 
                 })
                 document.getElementById("download4").addEventListener('click', function() {
-                    chart.exportChart({format: "jpg"}); 
+                    chart4.exportChart({format: "jpg"}); 
+                })
+                document.getElementById("downloadSommer").addEventListener('click', function() {
+                    chartVarighetSommer.exportChart({format: "jpg"}); 
+                })
+                document.getElementById("downloadVinter").addEventListener('click', function() {
+                    chartVarighetVinter.exportChart({format: "jpg"}); 
                 })
             }
+            
         </script>
 </head>
 <div id="chartContainer1" style="height: 370px; width: 100%;"></div>
 <button id="download1">Download Graf1</button>
+
 <div id="chartContainer2" style="height: 370px; width: 100%;"></div></div>
 <button id="download2">Download Graf2</button>
+
 <div id="chartContainer3" style="height: 370px; width: 100%;"></div>
 <button id="download3">Download Graf3</button>
-<div id="chartContainer4" style="height: 370px; width: 40%; float: center;"></div>
-<button id="download4">Download Graf3</button>
+
+<div id="chartContainer4" style="height: 370px; width: 40%; float: center;">
+</div>
+<button id="download4">Download Graf4</button>
+
+<div id="chartContainerSommer" style="height: 370px; width: 40%; float: center;"></div>
+<button id="downloadSommer">Download GrafSommer</button>
+
+<div id="chartContainerVinter" style="height: 370px; width: 40%; float: center;"></div>
+<button id="downloadVinter">Download GrafVinter</button>
+
 <script src="https://cdn.canvasjs.com/canvasjs.min.js"></script>
+<script defer>
+    document.getElementById("Qmedian").innerHTML = "Qmedian = " + <?php echo json_encode($Qmedian, JSON_NUMERIC_CHECK); ?> + " m3/s";
+    document.getElementById("5Persentil").innerHTML = "5% Persentil = " + <?php echo json_encode($Persentil5, JSON_NUMERIC_CHECK); ?> + " m3/s";
+</script>
 </body>
 </html>
