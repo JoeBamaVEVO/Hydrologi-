@@ -436,7 +436,7 @@ function FinnSFaktor($ProsjFeltAreal, $Qmiddel, $ProsjQmiddel, $FeltAreal){
         // Regner ut Q forhold
         $QForhold = $ProsjQmiddel / $Qmiddel;
         // Regner ut Skaleringsfaktor faktor
-        $SFaktor = $ArealForhold * $QForhold;
+        $SFaktor = round(($ArealForhold * $QForhold), 5);
 
 
         return $SFaktor;    
