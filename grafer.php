@@ -46,8 +46,16 @@ while(list($Dato, $Gjennomsnitt, $Maks, $Min) = fgetcsv($fileHandler2, 1024, ","
     
     // Denne arrayen blir brukt til å lage graf3 som viser maksimum avrenning
     $Maximum[] = array("x" => $javaScriptTimestamp, "y" => $Maks);
+	// Creates an extra array that stores all the values in $Maks
+	// So that we can find the largest value in the Måleserie.
+	$Max2[] = $Maks;
 }
 fclose($fileHandler2);
+// Here we find the largest number in £Max2 
+// This is for scaling the graph intervals correctly. 
+$MaxInMax = Max($Max2);
+$IntervalSize = round(($MaxInMax / 10), 0);
+
 
 // Her skal vi jobbe på Varighetsgrafen
 
@@ -122,9 +130,10 @@ while(list($Verdi, $Prosent) = fgetcsv($fileHandler, 1024, ",")){
 
 
 
-
+$Diagram1Overskrift = "Variasjon i middelavløp fra år til år";
 $Diagram2Overskrift = "Middel og minimum avrenning fordelt over årets dager i årene " . $StartÅr . " til " . $SluttÅr;
 $Diagram3Overskrift = "Maximum avrenning fordelt over årets dager i årene " . $StartÅr . " til " . $SluttÅr;
+
 
 ?>
 
@@ -143,9 +152,9 @@ $Diagram3Overskrift = "Maximum avrenning fordelt over årets dager i årene " . 
                     colorSet: "red",
                     animationEnabled: true,
                     exportEnabled: true,
-                    theme: "light1", // "light1", "light2", "dark1", "dark2"
+                    theme: "light2", // "light1", "light2", "dark1", "dark2"
                     title:{
-                        text: "Variasjon i middelavløp fra år til år"
+                        text: <?php echo json_encode($Diagram1Overskrift); ?>
                     },
                     axisX:{
                         title: "År",
@@ -251,7 +260,8 @@ $Diagram3Overskrift = "Maximum avrenning fordelt over årets dager i årene " . 
                         },
                     },
                     axisY: {
-                        interval: 0.2,
+						// Her skal vi lage en variable som setter intervallen på Y-Aksen
+                        interval:<?php echo $IntervalSize; ?>,
                         title: "Avrenning (m3/s)",
                         includeZero: true,
                         crosshair: {
