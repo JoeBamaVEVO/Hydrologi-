@@ -131,8 +131,8 @@ while(list($Verdi, $Prosent) = fgetcsv($fileHandler, 1024, ",")){
 
 
 $Diagram1Overskrift = "Variasjon i middelavløp fra år til år";
-$Diagram2Overskrift = "Middel og minimum avrenning fordelt over årets dager i årene " . $StartÅr . " til " . $SluttÅr;
-$Diagram3Overskrift = "Maximum avrenning fordelt over årets dager i årene " . $StartÅr . " til " . $SluttÅr;
+$Diagram2Overskrift = "Avrenningen fordelt over året";
+$Diagram3Overskrift = "Maksimale flommer fordelt over året";
 
 
 ?>
@@ -219,13 +219,14 @@ $Diagram3Overskrift = "Maximum avrenning fordelt over årets dager i årene " . 
                         name: "Q-Middel",
                         markerType: "square",
                         xValueType: "dateTime",
-                        color: "#F08080",
+                        color: "#80b3f6",
                         dataPoints: <?php echo json_encode($Middel, JSON_NUMERIC_CHECK); ?>
                     },
                     {
                         type: "line",
                         showInLegend: true,
                         name: "Q-Minimum",
+                        color: "#fdc975",
                         dataPoints: <?php echo json_encode($Minimum, JSON_NUMERIC_CHECK); ?>
                     }]
                 });
@@ -270,8 +271,10 @@ $Diagram3Overskrift = "Maximum avrenning fordelt over årets dager i årene " . 
                     },
                     data: [{        
                         type: "line",
+                        color: "#80b3f6",
                         indexLabelFontSize: 16,
                         xValueType: "dateTime",
+                        lineThickness: 1,
                         dataPoints: <?php echo json_encode($Maximum, JSON_NUMERIC_CHECK); ?>
                     }]
                 });
@@ -477,13 +480,13 @@ $Diagram3Overskrift = "Maximum avrenning fordelt over årets dager i årene " . 
             
         </script>
 </head>
-<div id="chartContainer1" style="height: 370px; width: 100%;"></div>
+<div id="chartContainer1" style="height: 370px; width: 40%;"></div>
 <button id="download1">Download Graf1</button>
 
-<div id="chartContainer2" style="height: 370px; width: 100%;"></div></div>
+<div id="chartContainer2" style="height: 370px; width: 40%;"></div></div>
 <button id="download2">Download Graf2</button>
 
-<div id="chartContainer3" style="height: 370px; width: 100%;"></div>
+<div id="chartContainer3" style="height: 370px; width: 40%;"></div>
 <button id="download3">Download Graf3</button>
 
 <div id="chartContainer4" style="height: 370px; width: 40%; float: center;">
