@@ -70,7 +70,7 @@
                 cursor:"pointer",
                 verticalAlign: "bottom",
                 horizontalAlign: "left",
-                dockInsidePlotArea: true,
+                dockInsidePlotArea: false,
                 itemclick: toogleDataSeries
             },
             data: [{
@@ -111,6 +111,13 @@
             theme: "light2",
             title:{
                 text: <?php echo json_encode($Diagram3Overskrift); ?>
+            },
+            legend:{
+                cursor:"pointer",
+                verticalAlign: "bottom",
+                horizontalAlign: "left",
+                dockInsidePlotArea: false,
+                itemclick: toogleDataSeries
             },
             axisX:{
                 interval: 1,
