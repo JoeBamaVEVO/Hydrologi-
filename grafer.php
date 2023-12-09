@@ -134,6 +134,12 @@ $Diagram1Overskrift = "Variasjon i middelavløp fra år til år";
 $Diagram2Overskrift = "Avrenningen fordelt over året";
 $Diagram3Overskrift = "Maksimale flommer fordelt over året";
 
+$VarighetsKurveOverskrift = "Varighetskurve for hele året";
+$VarighetsKurveVinterOverskrift = "Varighetskurve for vinterhalvåret";
+$VarighetsKurveSommerOverskrift = "Varighetskurve for sommerhalvåret";
+
+
+
 $VarighetskurveInterval = floor(($Qmiddel * 4 )/ 5)
 
 
@@ -151,6 +157,7 @@ $VarighetskurveInterval = floor(($Qmiddel * 4 )/ 5)
                 // Vi setter opp Graf1 og gjør den klar for utskrift
                 // Vi gir grafen navnet chart1 og legger den i chartContainer1
                 var chart1 = new CanvasJS.Chart("chartContainer1", {
+                    exportFileName: <?php echo json_encode($Diagram1Overskrift); ?>,
                     colorSet: "red",
                     animationEnabled: true,
                     exportEnabled: true,
@@ -184,6 +191,7 @@ $VarighetskurveInterval = floor(($Qmiddel * 4 )/ 5)
                 // Vi lager Graf2 og gjør den klar for utskrift
                 // Vi gir grafen navnet chart2 og legger den i HTML div chartContainer2
                 var chart2 = new CanvasJS.Chart("chartContainer2", {
+                    exportFileName: <?php echo json_encode($Diagram2Overskrift); ?>,
                     animationEnabled: true,
                     theme: "light2",
                     title:{
@@ -249,6 +257,7 @@ $VarighetskurveInterval = floor(($Qmiddel * 4 )/ 5)
                 // Tegner Graf3
                 var chart3 = new CanvasJS.Chart("chartContainer3", {
                     animationEnabled: true,
+                    exportFileName: <?php echo json_encode($Diagram3Overskrift); ?>,  
                     theme: "light2",
                     title:{
                         text: <?php echo json_encode($Diagram3Overskrift); ?>
@@ -288,9 +297,11 @@ $VarighetskurveInterval = floor(($Qmiddel * 4 )/ 5)
                 let LW = 1.3;  // Variable for line width
                 var chart4 = new CanvasJS.Chart("chartContainer4", {
                     animationEnabled: true,
+                    exportFileName: <?php echo json_encode($VarighetsKurveOverskrift); ?>,
                     theme: "light2",
                     title:{
-                        text: "Varighetskurve for hele året"
+                        text: <?php echo json_encode($VarighetsKurveOverskrift); ?>
+
                     },
                     axisX:{
                         minimum: 0,
@@ -347,8 +358,9 @@ $VarighetskurveInterval = floor(($Qmiddel * 4 )/ 5)
                 var chartVarighetSommer = new CanvasJS.Chart("chartContainerSommer", {
                     animationEnabled: true,
                     theme: "light2",
+                    exportFileName: <?php echo json_encode($VarighetsKurveSommerOverskrift); ?>,
                     title:{
-                        text: "Varighetskurve for sommerhalvåret"
+                        text: <?php echo json_encode($VarighetsKurveSommerOverskrift); ?>
                     },
                     axisX:{
                         minimum: 0,
@@ -407,8 +419,9 @@ $VarighetskurveInterval = floor(($Qmiddel * 4 )/ 5)
                 var chartVarighetVinter = new CanvasJS.Chart("chartContainerVinter", {
                     animationEnabled: true,
                     theme: "light2",
+                    exportFileName: <?php echo json_encode($VarighetsKurveVinterOverskrift); ?>,
                     title:{
-                        text: "Varighetskurve for vinterhalvåret"
+                        text: <?php echo json_encode($VarighetsKurveVinterOverskrift); ?>
                     },
                     axisX:{
                         minimum: 0,
