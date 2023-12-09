@@ -134,6 +134,8 @@ $Diagram1Overskrift = "Variasjon i middelavløp fra år til år";
 $Diagram2Overskrift = "Avrenningen fordelt over året";
 $Diagram3Overskrift = "Maksimale flommer fordelt over året";
 
+$VarighetskurveInterval = floor(($Qmiddel * 4 )/ 5)
+
 
 ?>
 
@@ -261,7 +263,7 @@ $Diagram3Overskrift = "Maksimale flommer fordelt over året";
                         },
                     },
                     axisY: {
-						// Her skal vi lage en variable som setter intervallen på Y-Aksen
+						// Her skal vi lage en variabel som setter intervallen på Y-Aksen
                         interval:<?php echo $IntervalSize; ?>,
                         title: "Avrenning (m3/s)",
                         includeZero: true,
@@ -283,7 +285,7 @@ $Diagram3Overskrift = "Maksimale flommer fordelt over året";
                 chart3.render();
 
                 // Tegner Graf4
-                let LW = 2;  // Variable for line width
+                let LW = 1.3;  // Variable for line width
                 var chart4 = new CanvasJS.Chart("chartContainer4", {
                     animationEnabled: true,
                     theme: "light2",
@@ -298,7 +300,8 @@ $Diagram3Overskrift = "Maksimale flommer fordelt over året";
                     },
                     axisY:{
                         minimum: 0,
-                    },
+                        maximum: <?php echo json_encode($Qmiddel * 4, JSON_NUMERIC_CHECK) ?>,
+                        interval: <?php echo json_encode($VarighetskurveInterval, JSON_NUMERIC_CHECK) ?>,                    },
                     data: [{        
                         type: "line",
                         lineThickness: LW,
@@ -355,7 +358,8 @@ $Diagram3Overskrift = "Maksimale flommer fordelt over året";
                     },
                     axisY:{
                         minimum: 0,
-                    },
+                        maximum: <?php echo json_encode($Qmiddel * 4, JSON_NUMERIC_CHECK) ?>,
+                        interval: <?php echo json_encode($VarighetskurveInterval, JSON_NUMERIC_CHECK) ?>,                    },
                     data: [{        
                         type: "line",
                         lineThickness: LW,
@@ -414,6 +418,8 @@ $Diagram3Overskrift = "Maksimale flommer fordelt over året";
                     },
                     axisY:{
                         minimum: 0,
+                        maximum: <?php echo json_encode($Qmiddel * 4, JSON_NUMERIC_CHECK) ?>,
+                        interval: <?php echo json_encode($VarighetskurveInterval, JSON_NUMERIC_CHECK) ?>,
                     },
                     data: [{        
                         type: "line",
