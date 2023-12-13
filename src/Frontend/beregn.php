@@ -5,12 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <?php 
-	include "head.php";
+	include "../setup/head.php";
     $project = $_GET['project'];
     $projectData = $userDir . "/projects/" . $project . "/" . $project . "Data.csv";
 
     if(isset($_POST["lagGraf"])){
-        header("location: grafer.php?project=" . $project);
+        header("location: ../grafer/grafer.php?project=" . $project);
         exit;
     }
     if(!isset($_SESSION['idusers'])){ // Sjekker om du logget inn
@@ -43,7 +43,7 @@
     $MinKvote = $_SESSION['MinKvote'];
     $ValgtMalestasjon = $_SESSION['Malestasjon'];
 
-    $ProsjAntallMalinger = $_SESSION['ProsjAntallMalinger'];
+    // $ProsjAntallMalinger = $_SESSION['ProsjAntallMalinger'];
     $ProsjQmiddel = $_SESSION['ProsjQmiddel'];
     $ProsjFeltAreal = $_SESSION['ProsjFeltAreal'];
     $ProsjSnaufjellsAndel = $_SESSION['ProsjSnaufjellsAndel'];
@@ -59,7 +59,7 @@
 <body>
     <?php
         // Setter måle directory og populerer dropdown menyen
-        $MaleDir = "malestasjoner";
+        $MaleDir = "../../malestasjoner";
         $Malestasjoner = "";
 
         if(is_dir($MaleDir)){
@@ -272,7 +272,7 @@ function HentMetadata($userDir, $project){
     }
     // Finnes sikkert en bedre måte å gjøre dette på men fukkit
     $_SESSION['Malestasjon'] = $Malestasjon;
-    $Metadata = "MalestasjonerMeta". "/" . "MD_" . $Malestasjon;
+    $Metadata = "../../MalestasjonerMeta". "/" . "MD_" . $Malestasjon;
     echo $Metadata;
     if(file_exists($Metadata)){
         $file = fopen($Metadata, "r");
@@ -341,7 +341,7 @@ function Skaler($userDir, $ValgtMalestasjon, $project){
         // Her henter vi ut skaleringsfaktoren fra input feltet
         $SkalerValue = $_POST['SkalerValue'];
         // Her henter vi ut måledata fra CSV filen
-        $Stasjon = "Malestasjoner/" . $ValgtMalestasjon;
+        $Stasjon = "../../Malestasjoner/" . $ValgtMalestasjon;
         // vi åpner Filehandler for å lese filen
         $FileHandler = fopen($Stasjon, "r");
         while(list($MaleDato, $MaleVerdi) = fgetcsv($FileHandler, 1024, ",")) {
@@ -375,7 +375,7 @@ function lagreProsjekt($userDir, $project){
     // Finnes sikkert en bedre måte å gjøre dette på men fukkit
     $csv = $userDir . "/projects/" . $project . "/" . $project . "Data.csv";
     $fileWrite = fopen($csv, "w");
-    fwrite($fileWrite, "AntallMalinger;" . $_POST['AntallMalinger'] . "\n");
+    // fwrite($fileWrite, "AntallMalinger;" . $_POST['AntallMalinger'] . "\n");
     fwrite($fileWrite, "ProsjQmiddel;" . $_POST['ProsjQmiddel'] . "\n");
     fwrite($fileWrite, "ProsjFeltAreal;" . $_POST['ProsjFeltAreal'] . "\n");
     fwrite($fileWrite, "ProsjSnaufjellsAndel;" . $_POST['ProsjSnaufjellsAndel'] . "\n");

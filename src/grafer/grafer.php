@@ -1,6 +1,6 @@
 <?php 
 // Vi inkluderer Head.php som inneholder alle nødvendige filer og variabler
-include "head.php";
+include "../setup/head.php";
 // Vi definerer stien til prosjektet, og til CSV filen som skal brukes til å lage graf 1
 $projectDir = $userDir . "/projects" . "/" . $_GET["project"];
 $CsvGraf1 = $projectDir . "/Tabelldata_Graf1.csv";
