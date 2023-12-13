@@ -56,7 +56,7 @@ function GetSlukeevne($Array, $csv){
 
     rsort($Array);
     $Slukeevne = $Array[0];
-
+    
     foreach($Array as $index => $Value){
         if($Value < $Slukeevne){
             $SlukTotalLoss += ($Slukeevne - $Value) * $index;
@@ -73,22 +73,136 @@ function GetSlukeevne($Array, $csv){
 }
 
 
+function GetSumLavere($Array, $csv){
+    sort($Array);
+    $TotalWater = array_sum($Array);
+    $fileWrite = fopen($csv, "w");  
 
+    $MMV = $Array[0];
+    $MMVTotalLoss = 0;
+    $OldIndex = 0;
 
+    foreach($Array as $index => $Value){
+        
+        if($Value > $MMV){
+            $RealIndex = $index - $OldIndex;
+            $Loss = $MMV * $RealIndex;
+            $MMVTotalLoss += $Loss;
 
+            $MMVTotalLossPercent = round(($MMVTotalLoss/$TotalWater)*100, 4);
 
+            fputcsv($fileWrite, array($MMV, $MMVTotalLossPercent));
 
-
-
-
-function testWrite($csv){
-    $txt = fopen("text.txt", "w");
-    foreach ($csv as $key => $value) {
-        fwrite($txt, $value . "\n");
+            $MMV = $Value;
+            $OldIndex = $index;
+        }
     }
-    fclose($txt);
+    fclose($fileWrite);
 }
 
-testWrite($MVerdiSommer);
+
+function getQmiddleQMedian5Pers($Array){
+    // Gets the Qmiddle value
+    $Qmiddle = array_sum($Array) / count($Array);
+    $n = 1;
+    // Stores the Qmiddle value in an array for use in the graphs
+    while($n <= 100){
+        $QmData[] = array("y" => $Qmiddle, "x" => $n);
+        $n += 99;
+    }
+
+    $Qmedian = $Array[count($Array)/2];
+    $Persentil5 = $Array[intval(count($Array) * 0.05)];
+
+    return list($Qmiddle, $Qmedian, $Persentil5) = array($$Qmiddle, $Qmedian, $Persentil5);
+}
+
+
+
+list($MVerdi, $MVerdiSommer, $MVerdiVinter) = GetWinterSummerData($csv);
+
+GetVarighetskurve($MVerdi, $projectDir . "/Varighet.csv");
+
+GetSlukeevne($MVerdi, $projectDir . "/Slukeevne.csv");
+
+GetSumLavere($MVerdi, $projectDir . "/SumLavere.csv");
+
+list($Qmiddle, $Qmedian, $Persentil5) = getQmiddleQMedian5Pers($MVerdi);
+
+
 
 ?>
+
+
+<script>
+window.onload = function () {
+
+CanvasJS.addColorSet("red", ["#C73A3A"]);
+
+// Vi setter opp Graf1 og gjør den klar for utskrift
+// Vi gir grafen navnet chart1 og legger den i chartContainer1
+var chartVarighetVinter = new CanvasJS.Chart("chartContainerVinter", {
+            animationEnabled: true,
+            theme: "light2",
+            exportFileName: "test",
+            title:{
+                text: "test Varighetskurve",
+            },
+            axisX:{
+                minimum: 0,
+                maximum: 100,
+                title: "Prosent",
+                interval: 10,
+            },
+            axisY:{
+                minimum: 0,
+                maximum: <?php echo json_encode($Qmiddel * 4, JSON_NUMERIC_CHECK) ?>,
+                interval: <?php echo json_encode($VarighetskurveInterval, JSON_NUMERIC_CHECK) ?>,
+            },
+            data: [{        
+                type: "line",
+                lineThickness: LW,
+                title : "Varighetskurve",
+                showInLegend: true,
+                name: "Varighetskurve",
+                indexLabelFontSize: 16,
+                dataPoints: <?php echo json_encode($VarighhetDataVinter, JSON_NUMERIC_CHECK); ?>
+            },
+            {
+                lineThickness: LW,
+                type: "spline",
+                title : "Slukeevne",
+                color: "#debb0d",
+                name: "Slukeevne",
+                showInLegend: true,
+                indexLabelFontSize: 16,
+                dataPoints: <?php echo json_encode($SlukeevneDataVinter, JSON_NUMERIC_CHECK); ?>
+            },
+            {
+                lineThickness: LW,
+                type: "spline",
+                title : "Sum Lavere",
+                showInLegend: true,
+                name : "Sum Lavere",
+                indexLabelFontSize: 16,
+                dataPoints: <?php echo json_encode($SumLavereDataVinter, JSON_NUMERIC_CHECK); ?>
+            },
+            {
+                lineThickness: LW,
+                type: "line",
+                title : "Qmiddel",
+                showInLegend: true,
+                name : "Qmiddel",
+                indexLabelFontSize: 16,
+                dataPoints: <?php echo json_encode($QmiddelDataVinter, JSON_NUMERIC_CHECK); ?>
+            }
+        ],
+        });
+
+        chartVarighetVinter.render();
+
+// Tegner Graf1 
+chart1.render();
+
+}
+</script>
