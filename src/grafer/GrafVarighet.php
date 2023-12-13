@@ -1,4 +1,6 @@
 <?php
+// Here we vill make the varighetskurver for the project
+
 $projectDir = $userDir . "/projects" . "/" . $_GET["project"];
 $csv = $projectDir . "/Skalert_" . $_GET["project"]; 
 $fileHandler = fopen($csv, "r");
