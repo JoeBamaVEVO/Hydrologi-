@@ -11,9 +11,6 @@ $MVerdiSommer = array();
 $MVerdiVinter = array();
 
 
-
-
-
 // Function that stores the total data, summer data and winter data in arrays.
 function GetWinterSummerData($csv){
     global $MVerdi, $MVerdiSommer, $MVerdiVinter;
@@ -36,15 +33,8 @@ fclose($fileHandler);
 return list($MVerdi, $MVerdiSommer, $MVerdiVinter) = array($MVerdi, $MVerdiSommer, $MVerdiVinter);
 }
 
-list($MVerdi, $MVerdiSommer, $MVerdiVinter) = GetWinterSummerData($csv);
-
-$NewCsv = $projectDir . "/test.csv";
-
-
-CreateVarighetskurve($MVerdi, $NewCsv);
-
-
-function CreateVarighetskurve($Array, $csv){
+// This function takes an Array of data and then stores that data in a csv file
+function GetVarighetskurve($Array, $csv){
     rsort($Array);
     $RelevantValue = $Array[0];
     $fileWrite = fopen($csv, "w");
@@ -58,26 +48,37 @@ function CreateVarighetskurve($Array, $csv){
     }
 }
 
+function GetSlukeevne($Array, $csv){
+    $fileWrite = fopen($csv, "w");
+
+    $SlukTotalWater = array_sum($Array);
+    $SlukTotalLoss = 0;
+
+    rsort($Array);
+    $Slukeevne = $Array[0];
+
+    foreach($Array as $index => $Value){
+        if($Value < $Slukeevne){
+            $SlukTotalLoss += ($Slukeevne - $Value) * $index;
+
+            $SlukeevnePercent = round(($SlukTotalLoss/$SlukTotalWater)*100, 4);
+
+            $SlukeevnePercent = 100 - $SlukeevnePercent;
+
+            fputcsv($fileWrite, array($Slukeevne, $SlukeevnePercent));
+            $Slukeevne = $Value;
+        }
+    }
+    fclose($fileWrite);
+}
 
 
 
 
-// Nå skal vi lage varighetskurve for vinter halvåret   
-// $csvWrite = $projectDir . '/TabelldataVarighetVinter.csv';
-// $fileWrite = fopen($csvWrite, "w");
 
-// $AktuellVerdi = $MVerdiVinter[0];
 
-// // Vi går gjennom arrayen
-// foreach($MVerdiVinter as $index => $Verdi){
-//     if($AktuellVerdi > $Verdi){
-//         // Vi finner prosenten og skriver til fil sammen med verdien
-//         $Prosent = round(($index/count($MVerdiVinter))*100, 4);
-//         fputcsv($fileWrite, array($AktuellVerdi, $Prosent));
-//         // Definerer AktuellVerdi til å være den nye verdien f.eks 7 -> 5
-//         $AktuellVerdi = $Verdi;
-//     }
-// }
+
+
 
 
 function testWrite($csv){
