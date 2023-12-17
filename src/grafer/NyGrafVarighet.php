@@ -129,8 +129,6 @@ GetSumLavere($MVerdi, $projectDir . "/SumLavere.csv");
 
 list($Qmiddle, $Qmedian, $Persentil5) = getQmiddleQMedian5Pers($MVerdi);
 
-
-
 ?>
 
 
