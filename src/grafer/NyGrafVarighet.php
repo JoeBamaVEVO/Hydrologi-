@@ -161,11 +161,11 @@ list($QmiddleSommer, $QmedianSommer, $Persentil5Sommer) = getQmiddleQMedian5Pers
 list($QmiddleVinter, $QmedianVinter, $Persentil5Vinter) = getQmiddleQMedian5Pers($MVerdiVinter);
 
 // Helårs
-CreateQmiddleData($Qmiddle, $QmiddleData);
+$QmiddleData = CreateQmiddleData($Qmiddle, $QmiddleData);
 // Sommer
-CreateQmiddleData($QmiddleSommer, $QmiddleDataSommer);
+$QmiddleDataSommer = CreateQmiddleData($QmiddleSommer, $QmiddleDataSommer);
 // Vinter
-CreateQmiddleData($QmiddleVinter, $QmiddleDataVinter);
+$QmiddleDataVinter = CreateQmiddleData($QmiddleVinter, $QmiddleDataVinter);
 
 
 
