@@ -10,7 +10,7 @@ require_once "graf1.php";
 // Her inporterer vi Graf2-3.php som lager CSV filen som brukes til å lage graf 2 og 3
 require_once "graf2-3.php";
 // Her inporterer vi GrafVarighet.php som lager CSV filen som brukes til å lage graf 4
-require_once "grafVarighet.php";
+require_once "NyGrafVarighet.php";
 
 
 // Her leser vi inn CSV filen som brukes til å lage graf 1
@@ -53,7 +53,7 @@ $IntervalSize = round(($MaxInMax / 10), 0);
 // Her skal vi jobbe på Varighetsgrafen
 
 // Her henter vi ut Varighetskurve data
-$csv = $projectDir . "/TabelldataVarighet.csv";
+$csv = $projectDir . "/Varighet.csv";
 $fileHandler = fopen($csv, "r");
 while(list($Verdi, $Prosent) = fgetcsv($fileHandler, 1024, ",")){
     $VarighhetData[] = array("y" => $Verdi, "x" => $Prosent);
@@ -77,7 +77,7 @@ while(list($Verdi, $Prosent) = fgetcsv($fileHandler, 1024, ",")){
 
 
 // Her henter vi ut Varighetskurve data for sommerhalvåret
-$csv = $projectDir . "/TabelldataVarighetSommer.csv";
+$csv = $projectDir . "/SommerVarighet.csv";
 $fileHandler = fopen($csv, "r");
 while(list($Verdi, $Prosent) = fgetcsv($fileHandler, 1024, ",")){
     $VarighhetDataSommer[] = array("y" => $Verdi, "x" => $Prosent);
@@ -100,7 +100,7 @@ while(list($Verdi, $Prosent) = fgetcsv($fileHandler, 1024, ",")){
 
 
 // Her henter vi ut Varighetskurve data for vinterhalvåret
-$csv = $projectDir . "/TabelldataVarighetVinter.csv";
+$csv = $projectDir . "/VinterVarighet.csv";
 $fileHandler = fopen($csv, "r");
 while(list($Verdi, $Prosent) = fgetcsv($fileHandler, 1024, ",")){
     $VarighhetDataVinter[] = array("y" => $Verdi, "x" => $Prosent);
@@ -133,9 +133,10 @@ $VarighetsKurveSommerOverskrift = "Varighetskurve for sommerhalvåret";
 
 
 
-$VarighetskurveInterval = floor(($Qmiddel * 4 )/ 5)
+$VarighetskurveInterval = floor(($Qmiddle * 4 )/ 5);
 
 
+echo "Her er QMiddle: " . $Qmiddle . "<br>";
 ?>
 
 <!DOCTYPE HTML>

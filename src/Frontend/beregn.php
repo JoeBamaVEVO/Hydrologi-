@@ -389,35 +389,35 @@ function lagreProsjekt($userDir, $project){
 
 
 function HentProsjektData($projectData, $userDir, $project){
-$file2 = fopen($projectData, "r");
-while(list($key, $value) = fgetcsv($file2, 1024, ";")){
-    if($key == "AntallMalinger"){
-        $_SESSION['AntallMalinger'] = $value;
-    }
-    if($key == "ProsjQmiddel"){
-        $_SESSION['ProsjQmiddel'] = $value;
-    }
-    if($key == "ProsjFeltAreal"){
-        $_SESSION['ProsjFeltAreal'] = $value;
-    } 
-    if($key == "ProsjSnaufjellsAndel"){
-        $_SESSION['ProsjSnaufjellsAndel'] = $value;
-    }
-    if($key == "ProsjEffSjoandel"){
-        $_SESSION['ProsjEffSjoandel'] = $value;
-    }
-    if($key == "ProsjMaxKvote"){
-        $_SESSION['ProsjMaxKvote'] = $value;
-    }
-    if($key == "ProsjMinKvote"){
-        $_SESSION['ProsjMinKvote'] = $value;
-    }
-    if($key == "ProsjFeltlengde"){
-        $_SESSION['ProsjFeltlengde'] = $value;
-    }
-    if($key == "ProsjSjoandel"){
-        $_SESSION['ProsjSjoandel'] = $value;
-    }
+    $file2 = fopen($projectData, "r");
+    while(list($key, $value) = fgetcsv($file2, 1024, ";")){
+        if($key == "AntallMalinger"){
+            $_SESSION['AntallMalinger'] = $value;
+        }
+        if($key == "ProsjQmiddel"){
+            $_SESSION['ProsjQmiddel'] = $value;
+        }
+        if($key == "ProsjFeltAreal"){
+            $_SESSION['ProsjFeltAreal'] = $value;
+        } 
+        if($key == "ProsjSnaufjellsAndel"){
+            $_SESSION['ProsjSnaufjellsAndel'] = $value;
+        }
+        if($key == "ProsjEffSjoandel"){
+            $_SESSION['ProsjEffSjoandel'] = $value;
+        }
+        if($key == "ProsjMaxKvote"){
+            $_SESSION['ProsjMaxKvote'] = $value;
+        }
+        if($key == "ProsjMinKvote"){
+            $_SESSION['ProsjMinKvote'] = $value;
+        }
+        if($key == "ProsjFeltlengde"){
+            $_SESSION['ProsjFeltlengde'] = $value;
+        }
+        if($key == "ProsjSjoandel"){
+            $_SESSION['ProsjSjoandel'] = $value;
+        }
 }
 fclose($file2);
 // header("location: beregn.php?project=" . $project);

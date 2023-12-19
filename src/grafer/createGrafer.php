@@ -168,7 +168,7 @@
             },
             axisY:{
                 minimum: 0,
-                maximum: <?php echo json_encode($Qmiddel * 4, JSON_NUMERIC_CHECK) ?>,
+                maximum: <?php echo json_encode($Qmiddle * 4, JSON_NUMERIC_CHECK) ?>,
                 interval: <?php echo json_encode($VarighetskurveInterval, JSON_NUMERIC_CHECK) ?>,                    },
             data: [{        
                 type: "line",
@@ -201,11 +201,11 @@
             {
                 lineThickness: LW,
                 type: "line",
-                title : "Qmiddel",
+                title : "Qmiddle",
                 showInLegend: true,
-                name : "Qmiddel",
+                name : "Qmiddle",
                 indexLabelFontSize: 16,
-                dataPoints: <?php echo json_encode($QmiddelData, JSON_NUMERIC_CHECK); ?>
+                dataPoints: <?php echo json_encode($QmiddleData, JSON_NUMERIC_CHECK); ?>
             }
         ],
         });
@@ -227,7 +227,7 @@
             },
             axisY:{
                 minimum: 0,
-                maximum: <?php echo json_encode($Qmiddel * 4, JSON_NUMERIC_CHECK) ?>,
+                maximum: <?php echo json_encode($Qmiddle * 4, JSON_NUMERIC_CHECK) ?>,
                 interval: <?php echo json_encode($VarighetskurveInterval, JSON_NUMERIC_CHECK) ?>,                    },
             data: [{        
                 type: "line",
@@ -260,11 +260,11 @@
             {
                 lineThickness: LW,
                 type: "line",
-                title : "Qmiddel",
+                title : "Qmiddle",
                 showInLegend: true,
-                name : "Qmiddel",
+                name : "Qmiddle",
                 indexLabelFontSize: 16,
-                dataPoints: <?php echo json_encode($QmiddelDataSommer, JSON_NUMERIC_CHECK); ?>
+                dataPoints: <?php echo json_encode($QmiddleDataSommer, JSON_NUMERIC_CHECK); ?>
             }
         ],
         });
@@ -288,7 +288,7 @@
             },
             axisY:{
                 minimum: 0,
-                maximum: <?php echo json_encode($Qmiddel * 4, JSON_NUMERIC_CHECK) ?>,
+                maximum: <?php echo json_encode($Qmiddle * 4, JSON_NUMERIC_CHECK) ?>,
                 interval: <?php echo json_encode($VarighetskurveInterval, JSON_NUMERIC_CHECK) ?>,
             },
             data: [{        
@@ -322,11 +322,11 @@
             {
                 lineThickness: LW,
                 type: "line",
-                title : "Qmiddel",
+                title : "Qmiddle",
                 showInLegend: true,
-                name : "Qmiddel",
+                name : "Qmiddle",
                 indexLabelFontSize: 16,
-                dataPoints: <?php echo json_encode($QmiddelDataVinter, JSON_NUMERIC_CHECK); ?>
+                dataPoints: <?php echo json_encode($QmiddleDataVinter, JSON_NUMERIC_CHECK); ?>
             }
         ],
         });

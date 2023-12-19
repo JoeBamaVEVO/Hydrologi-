@@ -1,4 +1,6 @@
 <?php
+include '../setup/head.php';
+
 // Here we vill make the varighetskurver for the project
 
 $projectDir = $userDir . "/projects" . "/" . $_GET["project"];
@@ -337,32 +339,32 @@ foreach($MVerdiVinter as $index => $Verdi){
 }
 
 ////////////////////////////////////////////////////////
-// Nå skal vi jobbe med QMedian, Qmiddel og 5 persentil/
+// Nå skal vi jobbe med QMedian, Qmiddle og 5 persentil/
 ////////////////////////////////////////////////////////
-// Vi vil også ha Qmiddel inn på grafen
-$Qmiddel = $TotalVann / count($MVerdi);
+// Vi vil også ha Qmiddle inn på grafen
+$Qmiddle = $TotalVann / count($MVerdi);
 
 $Qmedian = $MVerdi[count($MVerdi)/2];
 
 $n = 1;
 while($n <= 100){
-    $QmiddelData[] = array("y" => $Qmiddel, "x" => $n);
+    $QmiddleData[] = array("y" => $Qmiddle, "x" => $n);
     $n += 99;
 }
 
-// Qmiddel Sommer
-$QmiddelSommer = $TotalVannSommer / count($MVerdiSommer);
+// Qmiddle Sommer
+$QmiddleSommer = $TotalVannSommer / count($MVerdiSommer);
 $n = 1;
 while($n <= 100){
-    $QmiddelDataSommer[] = array("y" => $QmiddelSommer, "x" => $n);
+    $QmiddleDataSommer[] = array("y" => $QmiddleSommer, "x" => $n);
     $n += 99;
 }
 
-// Qmiddel Vinter
-$QmiddelVinter = $TotalVannVinter / count($MVerdiVinter);
+// Qmiddle Vinter
+$QmiddleVinter = $TotalVannVinter / count($MVerdiVinter);
 $n = 1;
 while($n <= 100){
-    $QmiddelDataVinter[] = array("y" => $QmiddelVinter, "x" => $n);
+    $QmiddleDataVinter[] = array("y" => $QmiddleVinter, "x" => $n);
     $n += 99;
 }
 // QMedian blir echoet ut i grafer.php
