@@ -157,6 +157,7 @@ list($Qmiddle, $Qmedian, $Persentil5) = getQmiddleQMedian5Pers($MVerdi);
 
 // Sommer   
 list($QmiddleSommer, $QmedianSommer, $Persentil5Sommer) = getQmiddleQMedian5Pers($MVerdiSommer);
+
 // Vinter
 list($QmiddleVinter, $QmedianVinter, $Persentil5Vinter) = getQmiddleQMedian5Pers($MVerdiVinter);
 

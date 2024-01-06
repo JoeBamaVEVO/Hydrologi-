@@ -153,13 +153,15 @@ echo "Her er QMiddle: " . $Qmiddle . "<br>";
 <div id="chartContainer3" style="height: 370px; width: 40%;"></div>
 <button id="download3">Download Graf3</button>
 
-<div id="chartContainer4" style="height: 370px; width: 40%; float: center;">
-</div>
+<span> <?php echo " <br> Qmiddle: $Qmiddle <br> Qmedian: $Qmedian <br> 5persentil: $Persentil5"?></span>
+<div id="chartContainer4" style="height: 370px; width: 40%; float: center;"></div>
 <button id="download4">Download Graf4</button>
 
+<span> <?php echo "<br> Qmiddle: $QmiddleSommer <br> Qmedian: $QmedianSommer <br> 5persentil: $Persentil5Sommer "?></span>
 <div id="chartContainerSommer" style="height: 370px; width: 40%; float: center;"></div>
 <button id="downloadSommer">Download GrafSommer</button>
 
+<span> <?php echo "<br> Qmiddle: $QmiddleVinter <br> Qmedian: $QmedianVinter <br> 5persentil: $Persentil5Vinter "?></span>
 <div id="chartContainerVinter" style="height: 370px; width: 40%; float: center;"></div>
 <button id="downloadVinter">Download GrafVinter</button>
 
@@ -171,3 +173,5 @@ echo "Her er QMiddle: " . $Qmiddle . "<br>";
 <?php include "createGrafer.php"; ?>
 </body>
 </html>
+
+
