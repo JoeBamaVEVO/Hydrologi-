@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <?php
-	include "head.php" 
+	include "../setup/head.php" 
 	?> 
 </head>
 <?php 
@@ -33,7 +33,7 @@ $is_invalid = false;
                     mkdir("users/" . $_SESSION["idusers"] . "-" . $user["fname"]. "/projects", 777, true);
                 }
 
-                header("Location: index.php");
+                header("Location: ../Frontend/index.php");
                 exit;
 
             } 
@@ -55,7 +55,7 @@ $is_invalid = false;
             <input type="password" name="password">
             <input type="submit" name="submit" value="Submit">
         </form>
-        <p class="textcenter">Ingen bruker? registrer deg <a href="/signup.php">her</a></p>
+        <p class="textcenter">Ingen bruker? registrer deg <a href="./signup.php">her</a></p>
     </div>
 </div>
 </body>

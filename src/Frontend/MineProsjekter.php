@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <?php include "head.php" ?>
+    <?php include "../setup/head.php"; ?>
 </head>
 <body>
     <?php 
     if(!isset($_SESSION['idusers'])){
-        header("location: index.php");
+        header("location: ../Frontend/index.php");
     }
     if(isset($_POST["newProject"])){
         mkdir($userDir . "/projects" . "/" . $_POST["newProjectName"], 777, true);
@@ -23,7 +23,7 @@
             if($dh = opendir($ProjectDir)){
                 while(($Project = readdir($dh)) !== false){
                     if($Project != "." && $Project != ".."){
-                        $Projects .= "<li><a href='beregn.php?project={$Project}'>{$Project}</a></li>";
+                        $Projects .= "<li><a href='../Frontend/beregn.php?project={$Project}'>{$Project}</a></li>";
                     }
                 }
                 closedir($dh);

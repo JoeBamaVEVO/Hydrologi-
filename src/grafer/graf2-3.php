@@ -43,8 +43,11 @@ foreach($MDato as $index => $dato){
     $SkuddÅr = 2008;
 
     // Vi bruker intval for å konvertere fra string til int.
-    $DagNummer = date("z", mktime(0,0,0,intval($mnd),intval($dag),$SkuddÅr)) + 1;
-    // echo  $DagNummer . "<br>";
+    $dag = intval($dag);
+    $mnd = intval($mnd);
+
+    // Vi bruker date funksjonen for å finne hvilken dag i året det er.
+    $DagNummer = date("z", mktime(0,0,0,$mnd,$dag,$SkuddÅr)) + 1;
 
     // Her akkumulerer vi måleverdier for hver dag i året i riktig "Boks"/array element.
     // Vi øker også teller med 1 for hver måleverdi lagt til, slik at vi kan finne gjennomsnitt
@@ -73,11 +76,9 @@ for($i = 1; $i < count($Dager); $i++){
     else{
         $Gjennomsnitt[$i] = 0;
     }
-    // echo $i . " Gjennomsnitt " . $Gjennomsnitt[$i] . " Maks: " . $Maks[$i] . " Min: " . $Min[$i] . "<br>";
 }
 
 // Vi henter det første året og det siste året for å vise perioden 
-// vi har data for. Disse variablene blir brukt i Index2.php senere.
 $StartÅr = substr($MDato[0], -4);
 $SluttÅr = substr($MDato[count($MDato)-1], -4);
 
@@ -87,9 +88,9 @@ $csv = $projectDir . "/Tabelldata_Graf2-3.csv";
 $fileWrite = fopen($csv, "w");
 // Vi skriver til filen ved hjelp av fputcsv funksjonen.
 $date = date("d-m-Y", strtotime("31-12-2007"));
+
 for($i = 1; $i < count($Dager); $i++){
     $new_date = date("d-m-Y", strtotime("+$i day" . $date));
-    // echo $new_date . "<br>";
     fputcsv($fileWrite, array($new_date, $Gjennomsnitt[$i], $Maks[$i], $Min[$i], ));
 }
 fclose($fileWrite);

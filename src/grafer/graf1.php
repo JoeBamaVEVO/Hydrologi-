@@ -26,7 +26,7 @@ $StartÅr = substr($MDato[0], -4);
 $SluttÅr = substr($MDato[count($MDato)-1], -4);
 // echo $StartÅr . "<br>" . $SluttÅr . "<br>";
 
-// Vi trenger også en variabel for å huske hvilket år vi er på
+// Vi trenger også en variabel for å huske hvilke år vi er på
 $AktueltÅr = $StartÅr;
 
 // Nå leser vi gjennom Mdato, hvis året = AktueltÅr så henter vi måleverdi fra Mverdi
@@ -41,13 +41,13 @@ $i = 0; // Teller for antall målinger
 $total = 0; // Variabel for å lagre summen av måleverdiene
 
 foreach($MDato as $index => $dato){
-    if(substr($dato, -4) == $AktueltÅr){
+    $DatoMåltÅr = substr($dato, -4);
+    if($DatoMåltÅr == $AktueltÅr){
         // Vi legger til måleverdien i totalen der vi bruker samme index som i MDato
         $total += $MVerdi[$index];
         $i++;
     }
-    elseif(substr($dato, -4) !== $AktueltÅr){
-        // echo $index . "<br>";
+    elseif($DatoMåltÅr !== $AktueltÅr){
         // Hvis vi er på siste element i MDato arrayen eller året ikke er likt AktueltÅr
         // så skriver vi gjennomsnittsverdien til fil og øker AktueltÅr med 1  
         $Gjennomsnitt = $total/$i;
@@ -59,6 +59,7 @@ foreach($MDato as $index => $dato){
 }
 // Når vi er ferdig med å lese gjennom MDato arrayen så har vi ikke skrevet ut siste år
 $Gjennomsnitt = $total/$i;
-fputcsv($fileWrite, array($AktueltÅr, round($Gjennomsnitt, 4)));
+$Gjennomsnitt = round($Gjennomsnitt, 4);
+fputcsv($fileWrite, array($AktueltÅr, $Gjennomsnitt));
 fclose($fileWrite);
 ?>

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 	<?php 
-	include "head.php" 
+    include '../setup/head.php';
 	?>
 </head>
 <body>
@@ -17,7 +17,7 @@
         <?php if (isset($_SESSION["idusers"])): ?>
             <a class="align-self-center"href="MineProsjekter.php"><button class="btn btn-primary">Mine Prosjekter</button></a>
         <?php else: ?>
-            <a class="align-self-center mb-4"href="login.php"><button type="button" class="btn btn-primary">login</button></a>
+            <a class="align-self-center mb-4"href="../Auth/login.php"><button type="button" class="btn btn-primary">login</button></a>
         <?php endif; ?>
     </div>
 </body>
