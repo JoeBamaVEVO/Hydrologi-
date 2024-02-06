@@ -61,7 +61,7 @@ while(list($Verdi, $Prosent) = fgetcsv($fileHandler, 1024, ",")){
 
 // Her henter vi ut slukeevne data
 $csv = $projectDir . "/Slukeevne.csv";
-echo $csv;
+// echo $csv;
 $fileHandler = fopen($csv, "r");
 while(list($Verdi, $Prosent) = fgetcsv($fileHandler, 1024, ",")){
     $SlukeevneData[] = array("y" => $Verdi, "x" => $Prosent);
@@ -85,7 +85,7 @@ while(list($Verdi, $Prosent) = fgetcsv($fileHandler, 1024, ",")){
 
 // Her henter vi ut slukeevne data
 $csv = $projectDir . "/SlukeevneSommer.csv";
-echo $csv;
+// echo $csv;
 $fileHandler = fopen($csv, "r");
 while(list($Verdi, $Prosent) = fgetcsv($fileHandler, 1024, ",")){
     $SlukeevneDataSommer[] = array("y" => $Verdi, "x" => $Prosent);
@@ -108,7 +108,7 @@ while(list($Verdi, $Prosent) = fgetcsv($fileHandler, 1024, ",")){
 
 // Her henter vi ut slukeevne data
 $csv = $projectDir . "/SlukeevneVinter.csv";
-echo $csv;
+// echo $csv;
 $fileHandler = fopen($csv, "r");
 while(list($Verdi, $Prosent) = fgetcsv($fileHandler, 1024, ",")){
     $SlukeevneDataVinter[] = array("y" => $Verdi, "x" => $Prosent);
@@ -143,24 +143,25 @@ $VarighetskurveInterval = floor(($Qmiddel * 4 )/ 5)
 <head>  
 </head>
 <body>
-<div id="chartContainer1" style="height: 370px; width: 40%;"></div>
-<button id="download1">Download Graf1</button>
+    <div class="chartbody">
+        <div id="chartContainer1" style="height: 370px; width: 40%;"></div>
+        <button id="download1">Download Graf1</button>
 
-<div id="chartContainer2" style="height: 370px; width: 40%;"></div></div>
-<button id="download2">Download Graf2</button>
+        <div id="chartContainer2" style="height: 370px; width: 40%;"></div>
+        <button id="download2">Download Graf2</button>
 
-<div id="chartContainer3" style="height: 370px; width: 40%;"></div>
-<button id="download3">Download Graf3</button>
+        <div id="chartContainer3" style="height: 370px; width: 40%;"></div>
+        <button id="download3">Download Graf3</button>
 
-<div id="chartContainer4" style="height: 370px; width: 40%; float: center;">
-</div>
-<button id="download4">Download Graf4</button>
+        <div id="chartContainer4" style="height: 370px; width: 40%; float: center;"></div>
+        <button id="download4">Download Graf4</button>
 
-<div id="chartContainerSommer" style="height: 370px; width: 40%; float: center;"></div>
-<button id="downloadSommer">Download GrafSommer</button>
+        <div id="chartContainerSommer" style="height: 370px; width: 40%; float: center;"></div>
+        <button id="downloadSommer">Download GrafSommer</button>
 
-<div id="chartContainerVinter" style="height: 370px; width: 40%; float: center;"></div>
-<button id="downloadVinter">Download GrafVinter</button>
+        <div id="chartContainerVinter" style="height: 370px; width: 40%; float: center;"></div>
+        <button id="downloadVinter">Download GrafVinter</button>
+    </div>
 
 <script src="https://cdn.canvasjs.com/canvasjs.min.js"></script>
 <script defer>

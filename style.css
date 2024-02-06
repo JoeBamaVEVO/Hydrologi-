@@ -224,3 +224,11 @@ nav a{
     transition: 0.2s;
     background-color: rgb(84, 84, 240);
 }
+
+.chartbody{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 2rem;
+}
